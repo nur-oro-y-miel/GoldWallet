@@ -1503,6 +1503,15 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
+"@types/react-native-calendars@^1.20.7":
+  version "1.20.7"
+  resolved "https://registry.yarnpkg.com/@types/react-native-calendars/-/react-native-calendars-1.20.7.tgz#5c8d549d78676f49c49848b6f439f9a495b804d4"
+  integrity sha512-2lpdEw6ls2/VGfrDfIBEpx+v3fjXpESMpJ/jK5VKpT+6YX2K4XqADZFXKlT/E0155vP7thNnTHgQdwMqjtE9Hg==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+    "@types/xdate" "*"
+
 "@types/react-native-share@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@types/react-native-share/-/react-native-share-3.1.0.tgz#06b3772257d77a8f56af05aa92729efaf6387069"
@@ -1567,6 +1576,11 @@
   version "3.4.9"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.9.tgz#fcf01997bbc9f7c09ae5f91383af076d466594e1"
   integrity sha512-XDwyIlt/47l2kWLTzw/mtrpLdB+GPSskR2n/PIcPn+VYhVO77rGhRncIR5GPU0KRzXuqkDO+J5qqrG0Y8P6jzQ==
+
+"@types/xdate@*":
+  version "0.8.29"
+  resolved "https://registry.yarnpkg.com/@types/xdate/-/xdate-0.8.29.tgz#0aeacee64c7f54792dc1e3e93af320839a0367dc"
+  integrity sha512-vhjumeX678c1aA5TDdxeLdWjqazQ4qDvgK57pRr5l3Y0H5+ZZYckNtLkJiW4tJ3YVZq43ZFZFVResfAM4UMvTw==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -4619,7 +4633,7 @@ hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.0.1, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.0.1, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -7651,6 +7665,16 @@ react-native-biometrics@2.1.4:
   resolved "https://registry.yarnpkg.com/react-native-biometrics/-/react-native-biometrics-2.1.4.tgz#e201e9f18baeb560eeaba8d41fbd4f90d04152fe"
   integrity sha512-Ek7NmzgHB4rot2DdzV9Q3pzxFjnEFipGSFsmWZw5vcM9vkMoebhz8d8UYgsp0efroyeLITDNHwcFGEzq8XW9Kg==
 
+react-native-calendars@^1.265.0:
+  version "1.265.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.265.0.tgz#4144408254afaebc97213708e3c7d911dc73a335"
+  integrity sha512-iOv5JXgo7Dm9yQ+P0PE5a8tmxGUHwGQOk1AddD8cmNZiuCIAv5G3f5fuBRJ8+sLcNdic1tamrh+e8A4UNMZsHA==
+  dependencies:
+    hoist-non-react-statics "^3.3.1"
+    lodash "^4.0.0"
+    prop-types "^15.5.10"
+    xdate "^0.8.0"
+
 react-native-camera@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.4.0.tgz#1591acdb76d626b9630299fe5dd9d3d77c4e58e5"
@@ -9884,6 +9908,11 @@ xcode@^2.0.0:
   dependencies:
     simple-plist "^1.0.0"
     uuid "^3.3.2"
+
+xdate@^0.8.0:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/xdate/-/xdate-0.8.2.tgz#d7b033c00485d02695baf0044f4eacda3fc961a3"
+  integrity sha1-17AzwASF0CaVuvAET06s2j/JYaM=
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

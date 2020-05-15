@@ -5,6 +5,7 @@ import { NavigationScreenProps, NavigationInjectedProps } from 'react-navigation
 import { images, icons } from 'app/assets';
 import { Header, ScreenTemplate, Button, InputItem, StyledText, Image } from 'app/components';
 import { Transaction, Route } from 'app/consts';
+import { processAddressData } from 'app/helpers/DataProcessing';
 import { typography, palette } from 'app/styles';
 
 import BlueApp from '../../BlueApp';
@@ -524,25 +525,7 @@ export class SendCoinsScreen extends Component<Props, State> {
    * @param data {String} Can be address or `bitcoin:xxxxxxx` uri scheme, or invalid garbage
    */
   processAddressData = (data: string) => {
-    const regex = /[?&]([^=#]+)=([^&#]*)/g;
-    const solvedData = regex.exec(data);
-    let address, amount;
-    if (!solvedData) {
-      address = data;
-      amount = this.state.addresses[0].amount;
-    } else {
-      address = data.split('?')[0].replace('bitcoin:', '');
-      const [param, paramName, value] = solvedData;
-      if (paramName === 'amount') {
-        amount = value;
-      } else {
-        amount = this.state.addresses[0].amount;
-      }
-    }
-    const newAddresses = {
-      address,
-      amount,
-    };
+    const newAddresses = processAddressData(data, this.state.addresses[0].amount);
     this.setState({
       addresses: [newAddresses],
     });
