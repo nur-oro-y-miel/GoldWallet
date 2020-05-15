@@ -378,7 +378,7 @@ module.exports = {
       april: 'Apr',
       may: 'May',
       june: 'Jun',
-      july: 'Hul',
+      july: 'Jul',
       august: 'Aug',
       september: 'Sep',
       october: 'Oct',
