@@ -10,6 +10,7 @@ export const images = {
   addressBookNoContacts: require('./images/addressBookNoContacts.png'),
   addressBookNotFound: require('./images/bvAppIconsSearchx2.png'),
   backArrow: require('./images/navigationBarBackArrow.png'),
+  nextBlackArrow: require('./images/navigationBarBackArrowCopy.png'),
   successBadge: require('./images/groupCopy2.png'),
   processingState: require('./images/processingState.png'),
   errorState: require('./images/errorState.png'),
