@@ -75,6 +75,7 @@ export interface Wallet {
   getID: () => string;
   weOwnAddress: (clipboard: string) => void;
   isInvoiceGeneratedByWallet: (clipboard: string) => void;
+  getPreferredBalanceUnit: () => string;
 }
 
 export interface Contact {

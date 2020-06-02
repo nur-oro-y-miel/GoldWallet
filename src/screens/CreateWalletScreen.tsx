@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 
 import { ScreenTemplate, Text, InputItem, Header, Button, FlatButton, RadioGroup, RadioButton } from 'app/components';
 import { Route, Wallet } from 'app/consts';
-import { AppStorage, HDSegwitBech32Wallet, HDSegwitP2SHWallet, SegwitP2SHWallet, BlueApp, EV } from 'app/legacy';
+import { AppStorage, HDSegwitBech32Wallet, HDSegwitP2SHWallet, SegwitP2SHWallet, BlueApp } from 'app/legacy';
 import { ApplicationState } from 'app/state';
 import { AppSettingsState } from 'app/state/appSettings/reducer';
+import { loadWallets, WalletsActionType } from 'app/state/wallets/actions';
 import { palette, typography } from 'app/styles';
 
 import CreateWalletSuccessScreen from './CreateWalletSuccessScreen';
@@ -17,6 +18,7 @@ const i18n = require('../../loc');
 
 interface Props extends NavigationInjectedProps {
   appSettings: AppSettingsState;
+  loadWallets: () => Promise<WalletsActionType>;
 }
 
 interface State {
@@ -92,7 +94,7 @@ export class CreateWalletScreen extends React.PureComponent<Props, State> {
       await wallet.generate();
       BlueApp.wallets.push(wallet);
       await BlueApp.saveToDisk();
-      EV(EV.enum.WALLETS_COUNT_CHANGED);
+      this.props.loadWallets();
       this.setState({ isSuccess: true, secret: wallet.getSecret().split(' ') });
     }
     this.setState({ isLoading: false });
@@ -177,7 +179,11 @@ const mapStateToProps = (state: ApplicationState) => ({
   appSettings: state.appSettings,
 });
 
-export default connect(mapStateToProps)(CreateWalletScreen);
+const mapDispatchToProps = {
+  loadWallets,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWalletScreen);
 
 const styles = StyleSheet.create({
   subtitle: {

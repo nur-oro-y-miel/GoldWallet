@@ -1,4 +1,3 @@
-// @ts-nocheck
 import moment from 'moment';
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Linking, TouchableOpacity } from 'react-native';
@@ -10,7 +9,12 @@ import { Image, Header, StyledText, Chip, ScreenTemplate } from 'app/components'
 import { CopyButton } from 'app/components/CopyButton';
 import { Transaction, Route } from 'app/consts';
 import { ApplicationState } from 'app/state';
-import { createTransaction, createTransactionAction, updateTransaction } from 'app/state/transactions/actions';
+import {
+  createTransactionNote,
+  updateTransactionNote,
+  CreateTransactionNoteAction,
+  UpdateTransactionNoteAction,
+} from 'app/state/transactions/actions';
 import { typography, palette } from 'app/styles';
 
 import BlueApp from '../../BlueApp';
@@ -32,8 +36,9 @@ function arrDiff(a1, a2) {
 }
 
 interface Props extends NavigationScreenProps<{ transaction: Transaction }> {
-  createTransaction: (transaction: Transaction) => createTransactionAction;
-  updateTransaction: (transaction: Transaction) => updateTransactionAction;
+  transactionNotes: Record<string, string>;
+  createTransactionNote: (transactionID: string, note: string) => CreateTransactionNoteAction;
+  updateTransactionNote: (transactionID: string, note: string) => UpdateTransactionNoteAction;
 }
 
 interface State {
@@ -46,7 +51,7 @@ interface State {
   note: string;
 }
 
-export class TransactionDetailsScreen extends Component<Props, State> {
+class TransactionDetailsScreen extends Component<Props, State> {
   static navigationOptions = (props: NavigationScreenProps<{ transaction: Transaction }>) => {
     const transaction = props.navigation.getParam('transaction');
     return {
@@ -57,12 +62,7 @@ export class TransactionDetailsScreen extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     const { hash } = props.navigation.getParam('transaction');
-    let note = '';
-    props.transactions.filter(transaction => {
-      if (transaction.hash == hash) {
-        note = transaction.note;
-      }
-    });
+    const note = props.transactionNotes[hash] || '';
 
     let foundTx = {};
     let from = [];
@@ -101,7 +101,6 @@ export class TransactionDetailsScreen extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    console.log('transactions/details - componentDidMount');
     this.setState({
       isLoading: false,
     });
@@ -120,15 +119,9 @@ export class TransactionDetailsScreen extends Component<Props, State> {
 
   updateNote = (note: string) => {
     if (!this.state.note) {
-      this.props.createTransaction({
-        hash: this.state.hash,
-        note,
-      });
+      this.props.createTransactionNote(this.state.hash, note);
     } else {
-      this.props.updateTransaction({
-        hash: this.state.hash,
-        note,
-      });
+      this.props.updateTransactionNote(this.state.hash, note);
     }
 
     this.setState({
@@ -235,12 +228,12 @@ export class TransactionDetailsScreen extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: ApplicationState) => ({
-  transactions: Object.values(state.transactions.transactions),
+  transactionNotes: state.transactions.transactionNotes,
 });
 
 const mapDispatchToProps = {
-  createTransaction,
-  updateTransaction,
+  createTransactionNote,
+  updateTransactionNote,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionDetailsScreen);
