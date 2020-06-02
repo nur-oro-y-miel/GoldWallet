@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, InteractionManager, RefreshControl } from 'react-native';
-import { NavigationInjectedProps, NavigationScreenProps } from 'react-navigation';
+import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { images } from 'app/assets';
 import { ListEmptyState, Image, WalletCard, ScreenTemplate, Header } from 'app/components';
-import { Wallet, Route, Transaction } from 'app/consts';
+import { Wallet, Route, Transaction, CONST } from 'app/consts';
 import { SecureStorageService } from 'app/services';
 import { ApplicationState } from 'app/state';
 import { typography, palette } from 'app/styles';
@@ -31,10 +31,9 @@ interface State {
 }
 
 export class DashboardScreen extends Component<Props, State> {
-  static navigationOptions = (props: NavigationScreenProps) => ({
-    header: () => (
-      <Header title={i18n.wallets.dashboard.title} addFunction={() => props.navigation.navigate(Route.CreateWallet)} />
-    ),
+  static navigationOptions = () => ({
+    // must be dynamic, as function as language switch stops to work
+    tabBarLabel: i18n.tabNavigator.dashboard,
   });
 
   state: State = {
@@ -179,7 +178,7 @@ export class DashboardScreen extends Component<Props, State> {
     const { lastSnappedTo } = this.state;
     const { wallets } = this.props;
     this.props.navigation.navigate('ActionSheet', {
-      wallets: wallets,
+      wallets,
       selectedIndex: lastSnappedTo,
       onPress: this.chooseItemFromModal,
     });
@@ -189,7 +188,7 @@ export class DashboardScreen extends Component<Props, State> {
     const { lastSnappedTo } = this.state;
     const { wallets, transactions } = this.props;
     const activeWallet = wallets[lastSnappedTo];
-    if (activeWallet.label !== 'All wallets') {
+    if (activeWallet.label !== CONST.allWallets) {
       // eslint-disable-next-line prettier/prettier
       return activeWallet.transactions?.length ? (
         <TransactionList data={activeWallet.transactions} label={activeWallet.label} />
@@ -219,44 +218,56 @@ export class DashboardScreen extends Component<Props, State> {
     }
     if (wallets.length) {
       return (
-        <ScreenTemplate
-          contentContainer={styles.contentContainer}
-          refreshControl={
-            <RefreshControl
-              onRefresh={() => this.refreshTransactions()}
-              refreshing={!this.state.isFlatListRefreshControlHidden}
-            />
-          }
-        >
-          <DashboardHeader
-            onSelectPress={this.showModal}
-            balance={activeWallet.balance}
-            label={activeWallet.label}
-            unit={activeWallet.preferredBalanceUnit}
-            onReceivePress={this.receiveCoins}
-            onSendPress={this.sendCoins}
+        <>
+          <Header
+            title={i18n.wallets.dashboard.title}
+            addFunction={() => this.props.navigation.navigate(Route.CreateWallet)}
           />
-          {activeWallet.label === 'All wallets' ? (
-            <WalletsCarousel
-              ref={this.walletCarouselRef as any}
-              data={wallets.filter(wallet => wallet.label !== 'All wallets')}
-              keyExtractor={this._keyExtractor as any}
-              onSnapToItem={this.onSnapToItem}
+          <ScreenTemplate
+            contentContainer={styles.contentContainer}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.refreshTransactions()}
+                refreshing={!this.state.isFlatListRefreshControlHidden}
+              />
+            }
+          >
+            <DashboardHeader
+              onSelectPress={this.showModal}
+              balance={activeWallet.balance}
+              label={activeWallet.label}
+              unit={activeWallet.preferredBalanceUnit}
+              onReceivePress={this.receiveCoins}
+              onSendPress={this.sendCoins}
             />
-          ) : (
-            <View style={{ alignItems: 'center' }}>
-              <WalletCard wallet={activeWallet} showEditButton />
-            </View>
-          )}
-          {this.renderTransactionList()}
-        </ScreenTemplate>
+            {activeWallet.label === CONST.allWallets ? (
+              <WalletsCarousel
+                ref={this.walletCarouselRef as any}
+                data={wallets.filter(wallet => wallet.label !== CONST.allWallets)}
+                keyExtractor={this._keyExtractor as any}
+                onSnapToItem={this.onSnapToItem}
+              />
+            ) : (
+              <View style={{ alignItems: 'center' }}>
+                <WalletCard wallet={activeWallet} showEditButton />
+              </View>
+            )}
+            {this.renderTransactionList()}
+          </ScreenTemplate>
+        </>
       );
     }
     return (
-      <ListEmptyState
-        variant={ListEmptyState.Variant.Dashboard}
-        onPress={() => this.props.navigation.navigate(Route.CreateWallet)}
-      />
+      <>
+        <Header
+          title={i18n.wallets.dashboard.title}
+          addFunction={() => this.props.navigation.navigate(Route.CreateWallet)}
+        />
+        <ListEmptyState
+          variant={ListEmptyState.Variant.Dashboard}
+          onPress={() => this.props.navigation.navigate(Route.CreateWallet)}
+        />
+      </>
     );
   }
 }

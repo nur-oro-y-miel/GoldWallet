@@ -1,7 +1,8 @@
-export const CONST = {
-  pinCodeLength: 4,
-  transactionMinPasswordLength: 8,
-};
+export enum CONST {
+  pinCodeLength = 4,
+  transactionMinPasswordLength = 8,
+  allWallets = 'All wallets',
+}
 
 export enum FlowType {
   password = 'password',
@@ -86,12 +87,14 @@ export interface Transaction {
   hash: string;
   txid: string;
   value: number;
-  time: number;
+  time?: number; // not present right after transaction is done
+  received: string; // date string, same value as 'time' field but human readable
   walletLabel: string;
   confirmations: number;
   inputs: any[];
   outputs: any[];
   note?: string;
+  walletPreferredBalanceUnit: string;
 }
 
 export interface AppSettings {

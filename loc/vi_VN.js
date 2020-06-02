@@ -6,6 +6,16 @@ module.exports = {
     never: 'không bao giờ',
     continue: 'Tiếp tục',
     ok: 'OK',
+    click: 'Nhấn',
+    here: 'tại đây',
+    save: 'Lưu',
+    confirm: 'Xác nhận',
+    copy: 'Sao chép ',
+    copied: 'Đã sao chép!',
+  },
+  tabNavigator: {
+    dashboard: 'Bảng điều khiển',
+    settings: 'Cài đặt',
   },
   message: {
     somethingWentWrong: 'Đã xảy ra lỗi',
@@ -21,9 +31,43 @@ module.exports = {
     creatingWalletDescription:
       'Vui lòng đợi trong khi chúng tôi tạo ví cho quý khách. Quá trình này có thể mất một thời gian.',
   },
+  onboarding: {
+    onboarding: 'Cài đặt ',
+    pin: 'PIN',
+    createPin: 'Tạo PIN',
+    createNewPin: 'PIN mới',
+    createPassword: 'Tạo mật khẩu cho giao dịch',
+    createPinDescription:
+      'Mã PIN của quý khách sẽ được sử dụng để đăng nhập vào ứng dụng. Quý khách có thể thay đổi nó trong phần Cài đặt.',
+    confirmPin: 'Xác nhận PIN ',
+    confirmNewPin: 'Xác nhận PIN mới ',
+    confirmPassword: 'Xác nhận mật khẩu cho giao dịch',
+    passwordDoesNotMatch: 'Mật khẩu không khớp. Xin vui lòng nhập mật khẩu có hiệu lực.',
+    createPasswordDescription:
+      'Mật khẩu cho giao dịch của quý khách sẽ được sử dụng để xác nhận tất cả các giao dịch. Quý khách không thể thay đổi nó. Mật khẩu giao dịch phải chứa ít nhất 8 ký tự chữ và số.',
+    changePin: 'Thay đổi PIN',
+    currentPin: 'PIN hiện tại',
+    pinDoesNotMatch: 'PIN không khớp. Xin vui lòng nhập PIN có hiệu lực.',
+    successDescription: 'Hooray! \nQuý khách đã tạo thành công PIN của mình.',
+    successDescriptionChangedPin: 'Hooray!\nQuý khách đã thay đổi thành công PIN của mình.',
+    successButton: 'Đi đến Bảng điều khiển ',
+    successButtonChangedPin: 'Quay về Cài đặt',
+  },
+  unlock: {
+    title: 'Mở khóa ',
+    touchID: 'Chạm ID cho "Gold Wallet"',
+    confirmButton: 'Xác nhận dấu vân tay để tiếp tục.',
+    enter: 'Nhập PIN',
+  },
+  unlockTransaction: {
+    headerText: 'Xác nhận giao dịch ',
+    title: 'Xác nhận mật khẩu cho giao dịch',
+    description: 'Xác nhận mật khẩu giao dịch để xử lý giao dịch. ',
+  },
   wallets: {
     dashboard: {
       title: 'Ví',
+      allWallets: 'Tất cả ví',
       noWallets: 'Không có ví',
       noWalletsDesc1: 'Không có ví nào.',
       noWalletsDesc2: ' thêm ví đầu tiên của quý khách.',
@@ -63,6 +107,7 @@ module.exports = {
       advancedOptions: 'Tùy chọn nâng cao',
       multipleAddresses: 'Nhiều địa chỉ',
       singleAddress: 'Một địa chỉ',
+      segwidAddress: 'Nó chứa một cây bao gồm các địa chỉ ví segwit, được tạo từ một hạt giống 24 từ duy nhất',
     },
     addSuccess: {
       title: 'Thêm ví mới',
@@ -72,6 +117,7 @@ module.exports = {
       okButton: 'OK, tôi đã viết nó ra!',
     },
     details: {
+      edit: 'Chỉnh sửa',
       latestTransaction: 'Giao dịch mới nhất',
       typeLabel: 'Loại',
       nameLabel: 'Tên',
@@ -159,6 +205,7 @@ module.exports = {
       scan: 'Quét',
       send: 'Gửi',
       next: 'Tiếp theo',
+      note: 'Lưu ý (tùy chọn)',
       to: 'đến',
       feeUnit: 'Sat/B',
       fee: 'Phí:',
@@ -194,6 +241,10 @@ module.exports = {
     fingerprintLogin: 'Đăng nhập bằng dấu vân tay',
     aboutUs: 'Giới thiệu',
     header: 'Cài đặt',
+    notSupportedFingerPrint: 'Thiết bị của quý khách không hỗ trợ vân tay',
+    TouchID: 'Cho phép nhận dạng vân tay',
+    FaceID: 'Cho phép nhận dạng ID khuôn mặt',
+    Biometrics: 'Cho phép sinh trắc học ',
   },
   aboutUs: {
     header: 'Giới thiệu',
@@ -207,6 +258,9 @@ module.exports = {
   },
   electrumServer: {
     header: 'Máy chủ Electrum',
+    title: 'Thay đổi máy chủ electrum',
+    description:
+      'Quý khách có thể thay đổi địa chỉ của máy chủ mà ứng dụng của quý khách kết nối. Địa chỉ mặc định được khuyên dùng.',
     save: 'Lưu',
     useDefault: 'Sử dụng mặc định',
     host: 'host',
@@ -214,6 +268,11 @@ module.exports = {
     successfullSave:
       'Những thay đổi của quý khách đã được lưu thành công. Có thể cần khởi động lại để thay đổi có hiệu lực.',
     connectionError: 'Không thể kết nối với máy chủ Electrum được cung cấp',
+  },
+  advancedOptions: {
+    title: 'Cấu hình tùy chọn nâng cao',
+    description:
+      'Bật tùy chọn nâng cao sẽ cho phép quý khách chọn từ các loại ví được liệt kê bên dưới: P2SH, HD P2SH, HD segwit.',
   },
   selectLanguage: {
     header: 'Ngôn ngữ',

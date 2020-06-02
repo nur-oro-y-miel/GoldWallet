@@ -21,7 +21,7 @@ interface State {
 }
 
 export class InputItem extends PureComponent<Props, State> {
-  inputItemRef = React.createRef();
+  inputItemRef = React.createRef<BaseTextInput>();
 
   constructor(props: Props) {
     super(props);
@@ -75,6 +75,10 @@ export class InputItem extends PureComponent<Props, State> {
     if (this.props.setValue) {
       this.props.setValue(text);
     }
+  };
+
+  focus = () => {
+    this.inputItemRef.current?.focus();
   };
 
   render() {

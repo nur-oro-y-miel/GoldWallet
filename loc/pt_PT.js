@@ -6,6 +6,16 @@ module.exports = {
     never: 'nunca',
     continue: 'Continuar',
     ok: 'OK',
+    click: 'Clique',
+    here: 'Aqui',
+    save: 'Guardar',
+    confirm: 'Confirmar',
+    copy: 'Copiar',
+    copied: 'Copiado!',
+  },
+  tabNavigator: {
+    dashboard: 'Menu Principal',
+    settings: 'Definições',
   },
   message: {
     somethingWentWrong: 'Alguma coisa correu mal',
@@ -19,9 +29,43 @@ module.exports = {
     creatingWalletDescription:
       'Estamos a criar a sua carteira. Este procedimento pode demorar um pouco. Agradecemos a sua compreensão.',
   },
+  onboarding: {
+    onboarding: 'Definir credenciais',
+    pin: 'PIN',
+    createPin: 'Definir PIN',
+    createNewPin: 'Novo PIN',
+    createPassword: 'Criar palavra-passe de transacção',
+    createPinDescription:
+      'O seu PIN será utilizado para iniciar sessão na aplicação. Poderá alterá-lo posteriormente no menu Definições.',
+    confirmPin: 'Confirmar PIN',
+    confirmNewPin: 'Confirmar novo PIN',
+    confirmPassword: 'Confirmar palavra-passe de transacção',
+    passwordDoesNotMatch: 'As palavras-passe não correspondem. Por favor, introduza uma palavra-passe válida.',
+    createPasswordDescription:
+      'A palavra-passe de transacção será utilizada para verificar todas as suas transacções. Informamos de que esta palavra-passe não pode ser alterada. A palavra-passe de transacção deve conter pelo menos 8 caracteres alfanuméricos.',
+    changePin: 'Alterar PIN',
+    currentPin: 'PIN actual',
+    pinDoesNotMatch: 'O PIN introduzido não corresponde. Por favor, introduza um PIN válido',
+    successDescription: 'Parabéns! \nDefiniu com sucesso o seu código PIN.',
+    successDescriptionChangedPin: 'Parabéns! \nAlterou com sucesso o seu código PIN.',
+    successButton: 'Ir ao Menu Principal',
+    successButtonChangedPin: 'Voltar ao menu Definições',
+  },
+  unlock: {
+    title: 'Desbloquear',
+    touchID: 'Touch ID para "Gold Wallet"',
+    confirmButton: 'Introduza a sua impressão digital para continuar.',
+    enter: 'Introduza o PIN',
+  },
+  unlockTransaction: {
+    headerText: 'Confirmar transacção',
+    title: 'Confirmar palavra-passe de transacção',
+    description: 'Confirme a palavra-passe de transacção para proceder com a transacção',
+  },
   wallets: {
     dashboard: {
       title: 'Carteiras',
+      allWallets: 'Todas as Wallets',
       noWallets: 'Sem carteiras',
       noWalletsDesc1: 'Nenhuma carteira para apresentar.',
       noWalletsDesc2: 'adicionar a sua primeira carteira.',
@@ -61,6 +105,8 @@ module.exports = {
       advancedOptions: 'Opções avançadas',
       multipleAddresses: 'Múltiplos endereços',
       singleAddress: 'Um endereço',
+      segwidAddress:
+        'Contém uma árvore de endereços de segmento nativos, gerados a partir de uma única semente de 24 palavras',
     },
     addSuccess: {
       title: 'Adicionar nova carteira',
@@ -70,6 +116,7 @@ module.exports = {
       okButton: 'OK, anotei-a!',
     },
     details: {
+      edit: 'Editar',
       latestTransaction: 'Transacção mais recente',
       typeLabel: 'Tipo',
       nameLabel: 'Nome',
@@ -157,6 +204,7 @@ module.exports = {
       scan: 'Analisar',
       send: 'Enviar',
       next: 'Seguinte',
+      note: 'Nota (opcional)',
       to: 'para',
       feeUnit: 'Sat/B',
       fee: 'Taxa:',
@@ -192,6 +240,10 @@ module.exports = {
     fingerprintLogin: 'Iniciar sessão com impressão digital',
     aboutUs: 'Sobre nós',
     header: 'Definições',
+    notSupportedFingerPrint: 'O seu dispositivo não suporta impressão digital',
+    TouchID: 'Permitir impressão digital',
+    FaceID: 'Permitir FaceID',
+    Biometrics: 'Permitir dados biométricos',
   },
   aboutUs: {
     header: 'Sobre nós',
@@ -205,6 +257,9 @@ module.exports = {
   },
   electrumServer: {
     header: 'Servidor Electrum',
+    title: 'Alterar o Servidor Electrum',
+    description:
+      'Poderá alterar o endereço do servidor ao qual é efectuada a ligação. O endereço padrão é recomendado.',
     save: 'Guardar',
     useDefault: 'Usar predefinição',
     host: 'anfitrião',
@@ -212,6 +267,12 @@ module.exports = {
     successfullSave:
       'As suas alterações foram guardadas com sucesso. A reinicialização pode ser exigida para que as alterações tenham efeito.',
     connectionError: 'Não está a ser possível efectuar a ligação ao servidor Electrum fornecido  ',
+  },
+  advancedOptions: {
+    title: 'Configurar opções avançadas',
+    description:
+      'A activação das Opções Avançadas permitirá escolher entre os tipos de carteira listados abaixo: \n' +
+      'P2SH, HD P2SH, HD segwit.',
   },
   selectLanguage: {
     header: 'Idioma',

@@ -6,6 +6,16 @@ module.exports = {
     never: 'nunca',
     continue: 'Continuar',
     ok: 'Aceptar',
+    click: 'Clic',
+    here: 'aquí',
+    save: 'Guardar',
+    confirm: 'Confirmar',
+    copy: 'Copiar',
+    copied: '¡Copiado!',
+  },
+  tabNavigator: {
+    dashboard: 'Panel',
+    settings: 'Configuración',
   },
   message: {
     somethingWentWrong: 'Algo salió mal',
@@ -18,9 +28,43 @@ module.exports = {
     creatingWallet: 'Creación de su monedero',
     creatingWalletDescription: 'Tenga paciencia mientras creamos su monedero. Puede que lleve un tiempo.',
   },
+  onboarding: {
+    onboarding: 'Configuración inicial',
+    pin: 'PIN',
+    createPin: 'Crear PIN',
+    createNewPin: 'Nuevo PIN',
+    createPassword: 'Crear contraseña de transacción',
+    createPinDescription:
+      'Su PIN se utilizará para acceder a la aplicación. Puede cambiarlo más tarde en la sección de Configuración.',
+    confirmPin: 'Confirmar PIN',
+    confirmNewPin: 'Confirmar nuevo PIN',
+    confirmPassword: 'Confirmar contraseña de transacción',
+    passwordDoesNotMatch: 'La contraseña no coincide. Por favor, introduzca una contraseña válida.',
+    createPasswordDescription:
+      'Su contraseña de transacción se utilizará para verificar todas las transacciones. No podrá cambiarla más tarde. La contraseña de transacción debe contener al menos 8 caracteres alfanuméricos.',
+    changePin: 'Cambiar PIN',
+    currentPin: 'PIN actual',
+    pinDoesNotMatch: 'El PIN no coincide. Por favor, introduzca un PIN válido.',
+    successDescription: '¡Bravo! \n Ha creado con éxito su PIN.',
+    successDescriptionChangedPin: '¡Bravo! \n Ha cambiado con éxito su PIN.',
+    successButton: 'Ir al Panel',
+    successButtonChangedPin: 'Volver a Configuración',
+  },
+  unlock: {
+    title: 'Desbloquear',
+    touchID: 'Touch ID para «Gold Wallet»',
+    confirmButton: 'Confirmar la huella digital para continuar.',
+    enter: 'Introducir PIN',
+  },
+  unlockTransaction: {
+    headerText: 'Confirmar transacción',
+    title: 'Confirmar la contraseña de transacción',
+    description: 'Confirmar la contraseña de transacción para proceder a la transacción.',
+  },
   wallets: {
     dashboard: {
       title: 'Monederos',
+      allWallets: 'Todas las carteras',
       noWallets: 'No hay monederos',
       noWalletsDesc1: 'No hay monederos para mostrar.',
       noWalletsDesc2: 'para agregar su primer monedero.',
@@ -60,6 +104,8 @@ module.exports = {
       advancedOptions: 'Opciones avanzadas',
       multipleAddresses: 'Múltiples direcciones',
       singleAddress: 'Dirección única',
+      segwidAddress:
+        'Contiene un árbol de direcciones SegWit nativas, generadas a partir de una única semilla de 24 palabras',
     },
     addSuccess: {
       title: 'Añadir nuevo monedero',
@@ -69,6 +115,7 @@ module.exports = {
       okButton: 'De acuerdo, ¡ya lo he escrito!',
     },
     details: {
+      edit: 'Editar',
       latestTransaction: 'Última transacción',
       typeLabel: 'Tipo',
       nameLabel: 'Nombre',
@@ -156,6 +203,7 @@ module.exports = {
       scan: 'Escanear',
       send: 'Enviar',
       next: 'Siguiente',
+      note: 'Nota (opcional)',
       to: 'para',
       feeUnit: 'Sat/B',
       fee: 'Comisión:',
@@ -191,6 +239,10 @@ module.exports = {
     fingerprintLogin: 'Inicio de sesión con huella digital',
     aboutUs: 'Sobre nosotros',
     header: 'Configuración',
+    notSupportedFingerPrint: 'Su dispositivo no admite huellas digitales',
+    TouchID: 'Permitir huella digital',
+    FaceID: 'Permitir FaceID',
+    Biometrics: 'Permitir biometría',
   },
   aboutUs: {
     header: 'Sobre nosotros',
@@ -204,6 +256,9 @@ module.exports = {
   },
   electrumServer: {
     header: 'Servidor Electrum',
+    title: 'Cambiar servidor electrum',
+    description:
+      'Puede cambiar la dirección del servidor al que se conectará su aplicación. Se recomienda la dirección por defecto.',
     save: 'Guardar',
     useDefault: 'Usar predeterminado',
     host: 'host',
@@ -211,6 +266,12 @@ module.exports = {
     successfullSave:
       'Sus cambios se han guardado correctamente. Puede ser necesario reiniciar para que los cambios surtan efecto.',
     connectionError: 'No se puede conectar al servidor Electrum proporcionado',
+  },
+  advancedOptions: {
+    title: 'Configurar opciones avanzadas',
+    description:
+      'Al activar las opciones avanzadas, podrá elegir entre los tipos de cartera enumerados a continuación: \n' +
+      'P2SH, HD P2SH, HD segwit.',
   },
   selectLanguage: {
     header: 'Idioma',

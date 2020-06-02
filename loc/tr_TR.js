@@ -6,6 +6,16 @@ module.exports = {
     never: 'asla',
     continue: 'Devam et',
     ok: 'Tamam',
+    click: 'Tıkla',
+    here: 'buraya',
+    save: 'Kaydet',
+    confirm: 'Onayla',
+    copy: 'Kopyala',
+    copied: 'Kopyalandı!',
+  },
+  tabNavigator: {
+    dashboard: 'Pano',
+    settings: 'Ayarlar',
   },
   message: {
     somethingWentWrong: 'Bir sorun meydana geldi',
@@ -18,9 +28,43 @@ module.exports = {
     creatingWallet: 'Cüzdanınız oluşturuluyor',
     creatingWalletDescription: 'Lütfen cüzdanınız oluşturulurken bekleyin. Biraz zaman alabilir.',
   },
+  onboarding: {
+    onboarding: 'Katılım',
+    pin: 'PIN',
+    createPin: 'PIN oluştur',
+    createNewPin: 'Yeni PIN',
+    createPassword: 'İşlem şifresi oluştur',
+    createPinDescription:
+      'PIN’iniz uygulamaya giriş yapmak için kullanılacaktır. Daha sonra Ayarlar bölümünden değiştirebilirsiniz.',
+    confirmPin: 'PIN’i Onayla',
+    confirmNewPin: 'Yeni PIN’i Onayla',
+    confirmPassword: 'İşlem şifresini onayla',
+    passwordDoesNotMatch: 'Şifre eşleşmiyor. Lütfen geçerli bir şifre girin.',
+    createPasswordDescription:
+      'İşlem Şifreniz tüm işlemleri doğrulamak için kullanılacak. Daha sonra değiştiremezsiniz. İşlem Şifresi en az 8 alfanümreik karakter içermelidir.',
+    changePin: 'PIN’i Değiştir',
+    currentPin: 'Mevcut PIN',
+    pinDoesNotMatch: 'PIN eşleşmiyor. Lütfen geçerli bir PIN girin.',
+    successDescription: 'Oley!  PIN’inizi başarıyla oluşturdunuz.',
+    successDescriptionChangedPin: 'Oley!  PIN’inizi başarıyla değiştirdiniz.',
+    successButton: 'Panoya Git',
+    successButtonChangedPin: 'Ayarlara Geri Dön',
+  },
+  unlock: {
+    title: 'Kilidi Aç',
+    touchID: '“Altın Cüzdan” için Dokunmatik Kimlik',
+    confirmButton: 'Devam etmek için parmak iziyle doğrulama yapın.',
+    enter: 'PIN Girin',
+  },
+  unlockTransaction: {
+    headerText: 'İşlemi onayla',
+    title: 'İşlem Şifresini Onayla',
+    description: 'İşleme devam etmek için İşlem Şifresini Onaylayın.',
+  },
   wallets: {
     dashboard: {
       title: 'Cüzdanlar',
+      allWallets: 'Tüm cüzdanlar',
       noWallets: 'Cüzdan yok',
       noWalletsDesc1: 'Gösterilecek cüzdan yok.',
       noWalletsDesc2: 'İlk cüzdanınızı eklemek için.',
@@ -60,6 +104,7 @@ module.exports = {
       advancedOptions: 'Gelişmiş seçenekler',
       multipleAddresses: 'Çoklu adresler',
       singleAddress: 'Tek adres',
+      segwidAddress: 'Tek bir 24 kelimelik seedden oluşturulmuş yerli segwit adreslerinden oluşan ağaç içerir',
     },
     addSuccess: {
       title: 'Yeni cüzdan ekle',
@@ -69,6 +114,7 @@ module.exports = {
       okButton: 'Tamam, bunu yazdım!',
     },
     details: {
+      edit: 'Düzenle',
       latestTransaction: 'Son işlem',
       typeLabel: 'Tür',
       nameLabel: 'Ad',
@@ -156,6 +202,7 @@ module.exports = {
       scan: 'Tara',
       send: 'Gönder',
       next: 'İleri',
+      note: 'Not (opsiyonel)',
       to: 'Alıcı',
       feeUnit: 'Sat/B',
       fee: 'Ücret:',
@@ -191,6 +238,10 @@ module.exports = {
     fingerprintLogin: 'Parmak iziyle giriş',
     aboutUs: 'Hakkımızda',
     header: 'Ayarlar',
+    notSupportedFingerPrint: 'Cihazınız parmak izini desteklemiyor',
+    TouchID: 'Parmak izine izin ver',
+    FaceID: 'FaceID’ye izin ver',
+    Biometrics: 'Biometriklere izin ver',
   },
   aboutUs: {
     header: 'Hakkımızda',
@@ -204,6 +255,8 @@ module.exports = {
   },
   electrumServer: {
     header: 'Electrum sunucusu',
+    title: 'Electrum sunucusunu değiştir',
+    description: 'Uygulamanızın bağlanacağı sunucunun adresini değiştirebilirsiniz. Varsayılan adres önerilir.',
     save: 'Kaydet',
     useDefault: 'Varsayılanı kullan',
     host: 'ana bilgisayar',
@@ -211,6 +264,12 @@ module.exports = {
     successfullSave:
       'Değişiklikleriniz başarıyla kaydedildi. Değişikliklerin geçerli olması için yeniden başlatma gerekebilir.',
     connectionError: 'Sağlanan Electrum sunucusuna bağlanılamıyor',
+  },
+  advancedOptions: {
+    title: 'Gelişmiş seçenekleri yapılandır',
+    description:
+      'Gelişmiş seçenekleri yapılandırmak aşağıda yer alan farklı cüzdan türleri arasından seçim yapmanıza imkan verir: \n' +
+      'P2SH, HD P2SH, HD segwit.',
   },
   selectLanguage: {
     header: 'Dil',

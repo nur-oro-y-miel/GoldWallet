@@ -1,5 +1,14 @@
 import React from 'react';
-import { ScrollView, StatusBar, StyleSheet, KeyboardAvoidingView, Platform, StyleProp, ViewStyle } from 'react-native';
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  StyleProp,
+  ViewStyle,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import { getStatusBarHeight, palette } from 'app/styles';
@@ -15,6 +24,8 @@ interface Props {
   statusBarStyle: StatusBarColor;
   contentContainer?: StyleProp<ViewStyle>;
   refreshControl?: React.ReactElement;
+  noScroll?: boolean;
+  keyboardShouldPersistTaps?: 'always' | 'never' | 'handled';
 }
 
 export class ScreenTemplate extends React.PureComponent<Props> {
@@ -25,13 +36,27 @@ export class ScreenTemplate extends React.PureComponent<Props> {
   };
 
   render() {
-    const { children, footer, statusBarStyle, contentContainer, refreshControl } = this.props;
+    const {
+      children,
+      footer,
+      statusBarStyle,
+      contentContainer,
+      refreshControl,
+      noScroll,
+      keyboardShouldPersistTaps,
+    } = this.props;
+    const Container = noScroll ? View : ScrollView;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle={statusBarStyle} />
-        <ScrollView contentContainerStyle={[styles.contentContainer, contentContainer]} refreshControl={refreshControl}>
+        <Container
+          style={[noScroll && styles.contentContainer, noScroll && contentContainer]}
+          contentContainerStyle={[styles.contentContainer, contentContainer]}
+          refreshControl={refreshControl}
+          keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        >
           {children}
-        </ScrollView>
+        </Container>
         {!!footer && (
           <KeyboardAvoidingView
             keyboardVerticalOffset={getStatusBarHeight() + 52}

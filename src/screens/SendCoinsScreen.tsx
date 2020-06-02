@@ -16,7 +16,6 @@ import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/netw
 import { DashboardHeader } from './Dashboard/DashboardHeader';
 
 const BigNumber = require('bignumber.js');
-const bip21 = require('bip21');
 const bitcoin = require('bitcoinjs-lib');
 
 const i18n = require('../../loc');
@@ -129,35 +128,6 @@ export class SendCoinsScreen extends Component<Props, State> {
       }
     } catch (_e) {}
   }
-
-  processBIP70Invoice = async (text: string) => {
-    console.log('processBIP70Invoice called');
-    try {
-      if (BitcoinBIP70TransactionDecode.matchesPaymentURL(text)) {
-        return BitcoinBIP70TransactionDecode.decode(text)
-          .then(response => {
-            const recipient = new BitcoinTransaction(
-              response.address,
-              i18n.formatBalanceWithoutSuffix(response.amount, BitcoinUnit.BTC, false),
-            );
-            return {
-              recipient,
-              memo: response.memo,
-              fee: response.fee,
-              feeSliderValue: response.fee,
-              bip70TransactionExpiration: response.expires,
-            };
-          })
-          .catch(error => {
-            Alert.alert(error.errorMessage);
-            throw error;
-          });
-      }
-    } catch (error) {
-      return false;
-    }
-    throw new Error('BIP70: Unable to process.');
-  };
 
   chooseItemFromModal = async (index: number) => {
     const wallets = BlueApp.getWallets();
@@ -440,7 +410,6 @@ export class SendCoinsScreen extends Component<Props, State> {
           console.log('try #', tries, 'fee=', fee);
           if (this.recalculateAvailableBalance(this.state.fromWallet.getBalance(), firstTransaction.amount, fee) < 0) {
             // we could not add any fee. user is trying to send all he's got. that wont work
-            Alert.alert('wtf');
             // throw new Error(loc.send.details.total_exceeds_balance);
           }
 
@@ -484,8 +453,7 @@ export class SendCoinsScreen extends Component<Props, State> {
         };
         await BlueApp.saveToDisk();
       } catch (err) {
-        console.log(err);
-        Alert.alert(err);
+        Alert.alert(err.toString());
         this.setState({ isLoading: false });
         return;
       }
@@ -502,32 +470,15 @@ export class SendCoinsScreen extends Component<Props, State> {
           ),
           memo: this.state.memo,
           fromWallet: this.state.fromWallet,
-          tx: tx,
+          tx,
           satoshiPerByte: actualSatoshiPerByte.toFixed(2),
         }),
       );
     });
   };
 
-  decodeBitcoinUri = (uri: string) => {
-    let amount = '';
-    let parsedBitcoinUri = null;
-    let address = uri || '';
-    let memo = '';
-    try {
-      parsedBitcoinUri = bip21.decode(uri);
-      address = parsedBitcoinUri.hasOwnProperty('address') ? parsedBitcoinUri.address : address;
-      if (parsedBitcoinUri.hasOwnProperty('options')) {
-        if (parsedBitcoinUri.options.hasOwnProperty('amount')) {
-          amount = parsedBitcoinUri.options.amount.toString();
-          amount = parsedBitcoinUri.options.amount;
-        }
-        if (parsedBitcoinUri.options.hasOwnProperty('label')) {
-          memo = parsedBitcoinUri.options.label || memo;
-        }
-      }
-    } catch (_) {}
-    return { address, amount, memo };
+  setAddress = async (item: any, index: number, text: string) => {
+    this.processAddressData(text.trim());
   };
 
   renderAmountInput = () => {
@@ -535,7 +486,7 @@ export class SendCoinsScreen extends Component<Props, State> {
     for (const [index, item] of this.state.addresses.entries()) {
       rows.push(
         <InputItem
-          label="Amount"
+          label={i18n.transactions.details.amount}
           suffix="BTCV"
           keyboardType="numeric"
           value={item.amount ? item.amount.toString().replace(',', '.') : null}
@@ -557,36 +508,10 @@ export class SendCoinsScreen extends Component<Props, State> {
       rows.push(
         <InputItem
           multiline
-          label="Address"
+          label={i18n.contactDetails.addressLabel}
           style={styles.addressInput}
           value={this.state.addresses[index].address}
-          setValue={async text => {
-            text = text.trim();
-            const transactions = this.state.addresses;
-            try {
-              const { recipient, memo, fee, feeSliderValue } = await this.processBIP70Invoice(text);
-              transactions[index].address = recipient.address;
-              transactions[index].amount = recipient.amount;
-              this.setState({
-                addresses: transactions,
-                memo: memo,
-                fee,
-                feeSliderValue,
-                isLoading: false,
-              });
-            } catch (_e) {
-              const { address, amount, memo } = this.decodeBitcoinUri(text);
-              item.address = address || text;
-              item.amount = amount || item.amount;
-              transactions[index] = item;
-              this.setState({
-                addresses: transactions,
-                memo: memo || this.state.memo,
-                isLoading: false,
-                bip70TransactionExpiration: null,
-              });
-            }
-          }}
+          setValue={text => this.setAddress(item, index, text)}
         />,
       );
     }
@@ -621,7 +546,7 @@ export class SendCoinsScreen extends Component<Props, State> {
     this.setState({
       addresses: [newAddresses],
     });
-    return;
+    return newAddresses;
   };
 
   render() {
@@ -674,7 +599,7 @@ export class SendCoinsScreen extends Component<Props, State> {
             </TouchableOpacity>
           </View>
 
-          <InputItem label="Note (optional)" setValue={memo => this.setState({ memo })} />
+          <InputItem label={i18n.send.details.note} setValue={memo => this.setState({ memo })} />
         </View>
       </ScreenTemplate>
     );

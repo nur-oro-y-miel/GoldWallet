@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationScreenProps, NavigationInjectedProps } from 'react-navigation';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 
 import { images } from 'app/assets';
-import { Header, PinInput, Image, ScreenTemplate } from 'app/components';
+import { Header, Image, PinView, PinInputView } from 'app/components';
 import { CONST } from 'app/consts';
 import { BiometricService, SecureStorageService } from 'app/services';
-import { palette, typography } from 'app/styles';
+import { getStatusBarHeight, palette, typography } from 'app/styles';
 
 const BlueApp = require('../../BlueApp');
 const i18n = require('../../loc');
@@ -19,7 +19,6 @@ interface Props {
 interface State {
   pin: string;
   error: string;
-  showInput: boolean;
 }
 
 export class UnlockScreen extends PureComponent<Props, State> {
@@ -27,13 +26,10 @@ export class UnlockScreen extends PureComponent<Props, State> {
     header: <Header navigation={props.navigation} title={i18n.unlock.title} />,
   });
 
-  state = {
+  state: State = {
     pin: '',
     error: '',
-    showInput: true,
   };
-
-  inputRef: any = React.createRef();
 
   async componentDidMount() {
     await BlueApp.startAndDecrypt();
@@ -44,26 +40,15 @@ export class UnlockScreen extends PureComponent<Props, State> {
 
   unlockWithBiometrics = async () => {
     if (!!BiometricService.biometryType) {
-      this.setState(
-        {
-          showInput: false,
-        },
-        async () => {
-          const result = await BiometricService.unlockWithBiometrics();
-          if (result) {
-            this.props.onSuccessfullyAuthenticated && this.props.onSuccessfullyAuthenticated();
-          } else {
-            this.setState({
-              showInput: true,
-            });
-          }
-        },
-      );
+      const result = await BiometricService.unlockWithBiometrics();
+      if (result) {
+        this.props.onSuccessfullyAuthenticated && this.props.onSuccessfullyAuthenticated();
+      }
     }
   };
 
   updatePin = (pin: string) => {
-    this.setState({ pin }, async () => {
+    this.setState({ pin: this.state.pin + pin }, async () => {
       if (this.state.pin.length === CONST.pinCodeLength) {
         const setPin = await SecureStorageService.getSecuredValue('pin');
         if (setPin === this.state.pin) {
@@ -78,26 +63,24 @@ export class UnlockScreen extends PureComponent<Props, State> {
     });
   };
 
-  openKeyboard = () => {
-    if (this.inputRef.current) {
-      this.inputRef.current.inputItemRef.current.focus();
-    }
+  onClearPress = () => {
+    this.setState({
+      pin: this.state.pin.slice(0, -1),
+    });
   };
 
   render() {
     const { error, pin } = this.state;
     return (
-      <ScreenTemplate
-        contentContainer={styles.container}
-        footer={
-          <View style={styles.pinContainer}>
-            <PinInput value={pin} onTextChange={pin => this.updatePin(pin)} />
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        }
-      >
-        <Image source={images.portraitLogo} style={styles.logo} resizeMode="contain" />
-      </ScreenTemplate>
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        <View style={styles.imageContainer}>
+          <Image source={images.portraitLogo} style={styles.logo} resizeMode="contain" />
+        </View>
+        <PinView value={pin} length={CONST.pinCodeLength as number} />
+        <Text style={styles.errorText}>{error}</Text>
+        <PinInputView value={pin} onTextChange={this.updatePin} onClearPress={this.onClearPress} />
+      </View>
     );
   }
 }
@@ -106,17 +89,21 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.white,
     alignItems: 'center',
-    justifyContent: 'center',
+    ...StyleSheet.absoluteFillObject,
+    paddingTop: getStatusBarHeight(),
+    zIndex: 1000,
   },
-  pinContainer: {
+  imageContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
   },
   logo: {
     width: 150,
     height: 235,
   },
   errorText: {
-    marginTop: 10,
+    marginVertical: 20,
     color: palette.textRed,
     ...typography.headline6,
   },

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, StyleSheet, BackHandler, View } from 'react-native';
+import { Text, StyleSheet, BackHandler, View, NativeEventSubscription } from 'react-native';
 import { NavigationScreenProps, NavigationEvents, NavigationInjectedProps } from 'react-navigation';
 
 import { Header, PinInput, ScreenTemplate } from 'app/components';
@@ -43,8 +43,8 @@ export class CreatePinScreen extends PureComponent<Props, State> {
     flowType: '',
   };
 
-  pinInputRef: any = React.createRef();
-  backHandler: any;
+  pinInputRef = React.createRef<PinInput>();
+  backHandler?: NativeEventSubscription;
 
   componentDidMount() {
     this.setState({
@@ -54,11 +54,11 @@ export class CreatePinScreen extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.backHandler.remove();
+    this.backHandler && this.backHandler.remove();
   }
 
   backAction = () => {
-    this.state.flowType === 'newPin' ? this.props.navigation.navigate(Route.Settings) : BackHandler.exitApp();
+    this.state.flowType === FlowType.newPin ? this.props.navigation.navigate(Route.Settings) : BackHandler.exitApp();
     return true;
   };
 
@@ -77,22 +77,13 @@ export class CreatePinScreen extends PureComponent<Props, State> {
   };
 
   openKeyboard = () => {
-    if (this.pinInputRef.pinCodeRef) {
-      this.pinInputRef.pinCodeRef.current.inputRef.current.focus();
-    }
+    this.pinInputRef.current?.focus();
   };
 
   render() {
     const { flowType, pin } = this.state;
     return (
-      <ScreenTemplate
-        contentContainer={styles.container}
-        footer={
-          <View style={styles.pinContainer}>
-            <PinInput value={pin} onTextChange={this.updatePin} ref={this.pinInputRef} />
-          </View>
-        }
-      >
+      <ScreenTemplate noScroll>
         <NavigationEvents onDidFocus={this.openKeyboard} />
         <View style={styles.infoContainer}>
           <Text style={typography.headline4}>
@@ -100,23 +91,21 @@ export class CreatePinScreen extends PureComponent<Props, State> {
           </Text>
           <Text style={styles.pinDescription}>{i18n.onboarding.createPinDescription}</Text>
         </View>
+        <View style={styles.pinContainer}>
+          <PinInput value={pin} onTextChange={this.updatePin} ref={this.pinInputRef} />
+        </View>
       </ScreenTemplate>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-evenly',
+  pinContainer: {
     alignItems: 'center',
+    marginTop: 24,
   },
   infoContainer: {
     alignItems: 'center',
-  },
-  pinContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
   },
   pinDescription: {
     ...typography.caption,

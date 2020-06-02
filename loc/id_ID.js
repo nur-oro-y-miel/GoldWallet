@@ -6,6 +6,16 @@ module.exports = {
     never: 'tidak pernah',
     continue: 'Lanjutkan',
     ok: 'OK',
+    click: 'Klik',
+    here: 'Disini',
+    save: 'Simpan',
+    confirm: 'Konfirmasi',
+    copy: 'Salin',
+    copied: 'Disalin!',
+  },
+  tabNavigator: {
+    dashboard: 'Dasbor',
+    settings: 'Pengaturan',
   },
   message: {
     somethingWentWrong: 'Terjadi kesalahan',
@@ -19,9 +29,43 @@ module.exports = {
     creatingWalletDescription:
       'Mohon kesabaran Anda sementara kami membuat dompet Anda. Ini mungkin membutuhkan waktu.',
   },
+  onboarding: {
+    onboarding: 'Onboarding',
+    pin: 'PIN',
+    createPin: 'Buat PIN',
+    createNewPin: 'PIN Baru',
+    createPassword: 'Buat sandi transaksi',
+    createPinDescription:
+      'PIN Anda kan digunakan untuk masuk ke aplikasi. Anda dapat melakukan perubahan nanti di bagian pengaturan.',
+    confirmPin: 'Konfirmasi PIN',
+    confirmNewPin: 'Konfirmasi PIN baru',
+    confirmPassword: 'Konfirmasi sandi transaksi',
+    passwordDoesNotMatch: 'Kata sandi tidak cocok. Mohon masukkan kata sandi yang valid.',
+    createPasswordDescription:
+      'Kata Sandi Transaksi Anda akan digunakan untuk memverifikasi semua transaksi. Anda tidak dapat melakukan perubahan setelah ini. Sandi Transaksi harus paling tidak terdiri dari 8 karakter alfanumerik.',
+    changePin: 'Ubah PIN',
+    currentPin: 'PIN Sekarang',
+    pinDoesNotMatch: 'PIN tidak cocok. Mohon masukkan PIN yang valid.',
+    successDescription: 'Hore!\nPIN Anda telah berhasil dibuat.',
+    successDescriptionChangedPin: 'Hore!\nPIN Anda telah berhasil dirubah.',
+    successButton: 'Pergi ke Dasbor',
+    successButtonChangedPin: 'Kembali ke Pengaturan',
+  },
+  unlock: {
+    title: 'Buka Kunci',
+    touchID: 'Touch ID untuk "Gold Wallet"',
+    confirmButton: 'Konfirmasi sidik jari Anda untuk melanjutkan.',
+    enter: 'Masukkan PIN',
+  },
+  unlockTransaction: {
+    headerText: 'Konfirmasi transaksi',
+    title: 'Konfirmasi Kata Sandi Transaksi',
+    description: 'Konfirmasi Kata Sandi Transaksi untuk melanjutkan transaksi.',
+  },
   wallets: {
     dashboard: {
       title: 'Dompet',
+      allWallets: 'Semua Dompet',
       noWallets: 'Tidak ada dompet',
       noWalletsDesc1: 'Tidak ada dompet untuk ditampilkan.',
       noWalletsDesc2: 'untuk menambahkan dompet pertama Anda.',
@@ -61,6 +105,8 @@ module.exports = {
       advancedOptions: 'Opsi lanjutan',
       multipleAddresses: 'Beberapa alamat',
       singleAddress: 'Satu alamat',
+      segwidAddress:
+        'Alamat ini mengandung sebuah pohon dari alamat segwit native, yang dihasilkan oleh sebuah benih tunggal 24-kata',
     },
     addSuccess: {
       title: 'Tambah dompet baru',
@@ -70,6 +116,7 @@ module.exports = {
       okButton: 'Oke, saya sudah menuliskannya!',
     },
     details: {
+      edit: 'Ubah',
       latestTransaction: 'Transaksi terakhir',
       typeLabel: 'Tipe',
       nameLabel: 'Nama',
@@ -157,6 +204,7 @@ module.exports = {
       scan: 'Pindai',
       send: 'Kirim',
       next: 'Berikutnya',
+      note: 'Catatan (opsional)',
       to: 'ke',
       feeUnit: 'Sat/B',
       fee: 'Biaya:',
@@ -192,6 +240,10 @@ module.exports = {
     fingerprintLogin: 'Login sidik jari',
     aboutUs: 'Tentang kami',
     header: 'Pengaturan',
+    notSupportedFingerPrint: 'Perangkat anda tidak mendukung pemindai sidik jari',
+    TouchID: 'Ijinkan penggunaan sidik jari',
+    FaceID: 'Ijinkan penggunaan FaceID',
+    Biometrics: 'Ijinkan penggunaan biometrik',
   },
   aboutUs: {
     header: 'Tentang kami',
@@ -205,12 +257,21 @@ module.exports = {
   },
   electrumServer: {
     header: 'Server Electrum',
+    title: 'Ubah server electrum',
+    description:
+      'Anda dapat merubah alamat server yang akan digunakan aplikasi Anda untuk menyambungkan diri. Alamat default direkomendasikan.',
     save: 'Simpan',
     useDefault: 'Gunakan default',
     host: 'host',
     port: 'port',
     successfullSave: 'Perubahan Anda berhasil disimpan. Mungkin dibutuhkan pemulaian ulang agar perubahan berlaku.',
     connectionError: 'Tidak dapat terhubung ke server Electrum yang tersedia',
+  },
+  advancedOptions: {
+    title: 'Konfigurasikan opsi lanjutan',
+    description:
+      'Mengaktifkan opsi Lanjutan akan memungkinkan Anda untuk memilih dari jenis dompet yang tercantum di bawah ini:\n' +
+      'P2SH, HD P2SH, HD segwit.',
   },
   selectLanguage: {
     header: 'Bahasa',
