@@ -53,8 +53,16 @@ export default class App extends React.PureComponent<State> {
     });
   };
 
-  render() {
+  get showUnlockScreen(): boolean {
+    if (__DEV__) {
+      // do not check PIN during development
+      return false;
+    }
     const { successfullyAuthenticated, isPinSet } = this.state;
+    return isPinSet && !successfullyAuthenticated;
+  }
+
+  render() {
     const isBiometricEnabledByUser = store.getState().appSettings.isBiometricsEnabled;
     return (
       <I18nextProvider i18n={i18n}>
@@ -62,14 +70,13 @@ export default class App extends React.PureComponent<State> {
           <AppStateManager handleAppComesToForeground={this.handleAppComesToForeground} />
           <PersistGate loading={null} persistor={persistor}>
             <View style={styles.wrapper}>
-              {isPinSet && !successfullyAuthenticated ? (
+              {this.showUnlockScreen && (
                 <UnlockScreen
                   onSuccessfullyAuthenticated={this.onSuccessfullyAuthenticated}
                   isBiometricEnabledByUser={isBiometricEnabledByUser}
                 />
-              ) : (
-                <AppContainer ref={NavigationService.setTopLevelNavigator} />
               )}
+              <AppContainer ref={NavigationService.setTopLevelNavigator} />
               <EventDispatcher />
             </View>
           </PersistGate>
