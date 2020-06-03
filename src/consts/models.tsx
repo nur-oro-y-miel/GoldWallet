@@ -51,9 +51,12 @@ export enum Route {
 
 export interface Wallet {
   balance: number;
+  hideBalance: boolean;
   preferredBalanceUnit: string;
   label: string;
-  transactions: any[];
+  chain: string;
+  num_addresses: number;
+  transactions: Transaction[];
   getBalance: () => void;
   getLatestTransactionTime: () => void;
   getLabel: () => string;
@@ -65,10 +68,14 @@ export interface Wallet {
   secret: string;
   type: string;
   typeReadable: string;
+  unconfirmed_balance: number;
+  unconfirmed_transactions: Transaction[];
+  utxo: any[];
+  _xpub: string;
   getID: () => string;
-  chain: string;
   weOwnAddress: (clipboard: string) => void;
   isInvoiceGeneratedByWallet: (clipboard: string) => void;
+  getPreferredBalanceUnit: () => string;
 }
 
 export interface Contact {

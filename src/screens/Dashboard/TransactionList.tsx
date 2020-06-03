@@ -1,13 +1,14 @@
 import moment from 'moment';
 import React, { Component } from 'react';
-import { SectionList, SectionListData, Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import { SectionList, SectionListData, StyleSheet, Text, View } from 'react-native';
 
-import { TransactionItem } from 'app/components';
+import { images } from 'app/assets';
+import { Image, TransactionItem } from 'app/components';
 import { Route, Transaction } from 'app/consts';
 import { NavigationService } from 'app/services';
-import { ApplicationState } from 'app/state';
 import { palette, typography } from 'app/styles';
+
+const i18n = require('../../../loc');
 
 interface TransactionWithDay extends Transaction {
   day: moment.Moment;
@@ -16,30 +17,25 @@ interface TransactionWithDay extends Transaction {
 }
 
 interface Props {
-  data: any;
   label: string;
   transactions: Transaction[];
+  transactionNotes: Record<string, string>;
 }
 
 interface State {
   transactions: ReadonlyArray<SectionListData<TransactionWithDay>>;
 }
 
-class TransactionList extends Component<Props, State> {
+export class TransactionList extends Component<Props, State> {
   state: State = {
     transactions: [],
   };
 
   static getDerivedStateFromProps(props: Props) {
     const groupedTransactions = [] as any;
-    const dataToGroup = props.data
-      .map((transaction: any) => {
-        const note = props.transactions.map(transactionWithNote => {
-          if (transactionWithNote.txid == transaction.txid) {
-            return transactionWithNote.note;
-          }
-          return '';
-        });
+    const dataToGroup = props.transactions
+      .map((transaction: Transaction) => {
+        const note = props.transactionNotes[transaction.txid];
         return {
           ...transaction,
           day: moment(transaction.received).format('ll'),
@@ -76,6 +72,15 @@ class TransactionList extends Component<Props, State> {
     NavigationService.navigate(Route.TransactionDetails, { transaction: item });
   };
 
+  renderListEmpty = () => {
+    return (
+      <View style={styles.noTransactionsContainer}>
+        <Image source={images.noTransactions} style={styles.noTransactionsImage} />
+        <Text style={styles.noTransactionsLabel}>{i18n.wallets.dashboard.noTransactions}</Text>
+      </View>
+    );
+  };
+
   render() {
     return (
       <View style={{ padding: 20 }}>
@@ -84,14 +89,20 @@ class TransactionList extends Component<Props, State> {
           keyExtractor={(item, index) => `${item.txid}-${index}`}
           renderItem={item => <TransactionItem item={item.item} onPress={this.onTransactionItemPress} />}
           renderSectionHeader={this.renderSectionTitle}
+          ListEmptyComponent={this.renderListEmpty}
         />
       </View>
     );
   }
 }
 
-const mapStateToProps = (state: ApplicationState) => ({
-  transactions: Object.values(state.transactions.transactions),
+const styles = StyleSheet.create({
+  noTransactionsContainer: {
+    alignItems: 'center',
+  },
+  noTransactionsImage: { height: 167, width: 167, marginVertical: 30 },
+  noTransactionsLabel: {
+    ...typography.caption,
+    color: palette.textGrey,
+  },
 });
-
-export default connect(mapStateToProps)(TransactionList);

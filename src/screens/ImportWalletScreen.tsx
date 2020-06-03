@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProps, NavigationInjectedProps } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import { Header, TextAreaItem, FlatButton, ScreenTemplate } from 'app/components';
 import { Button } from 'app/components/Button';
-import { Route } from 'app/consts';
+import { Route, Wallet } from 'app/consts';
 import { CreateMessage, MessageType } from 'app/helpers/MessageCreator';
 import { NavigationService } from 'app/services';
+import { loadWallets, WalletsActionType } from 'app/state/wallets/actions';
 import { typography, palette } from 'app/styles';
 
 import BlueApp from '../../BlueApp';
@@ -19,11 +21,14 @@ import {
   HDLegacyP2PKHWallet,
   HDSegwitBech32Wallet,
 } from '../../class';
-import EV from '../../events';
 
 const i18n = require('../../loc');
 
-export const ImportWalletScreen = () => {
+interface Props extends NavigationInjectedProps {
+  loadWallets: () => Promise<WalletsActionType>;
+}
+
+export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets }: Props) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [text, setText] = useState('');
   const [validationError, setValidationError] = useState('');
@@ -71,18 +76,18 @@ export const ImportWalletScreen = () => {
     NavigationService.navigate(Route.ImportWalletQRCode);
   };
 
-  const saveWallet = async (w: any) => {
-    if (BlueApp.getWallets().some(wallet => wallet.getSecret() === w.secret)) {
+  const saveWallet = async (wallet: any) => {
+    if (BlueApp.getWallets().some(wallet => wallet.getSecret() === wallet.secret)) {
       NavigationService.navigate(Route.ImportWallet);
       setValidationError(i18n.wallets.importWallet.walletInUseValidationError);
     } else {
       ReactNativeHapticFeedback.trigger('notificationSuccess', {
         ignoreAndroidSystemSettings: false,
       });
-      w.setLabel(i18n.wallets.import.imported + ' ' + w.typeReadable);
-      BlueApp.wallets.push(w);
+      wallet.setLabel(i18n.wallets.import.imported + ' ' + wallet.typeReadable);
+      BlueApp.wallets.push(wallet);
       await BlueApp.saveToDisk();
-      EV(EV.enum.WALLETS_COUNT_CHANGED);
+      loadWallets();
       showSuccessImportMessageScreen();
       // this.props.navigation.dismiss();
     }
@@ -242,9 +247,16 @@ export const ImportWalletScreen = () => {
   );
 };
 
-ImportWalletScreen.navigationOptions = (props: NavigationScreenProps) => ({
+// @ts-ignore
+ImportWalletScreen.navigationOptions = (props: Props) => ({
   header: <Header navigation={props.navigation} isBackArrow={true} title={i18n.wallets.importWallet.header} />,
 });
+
+const mapDispatchToProps = {
+  loadWallets,
+};
+
+export default connect(null, mapDispatchToProps)(ImportWalletScreen);
 
 const styles = StyleSheet.create({
   inputItemContainer: {
