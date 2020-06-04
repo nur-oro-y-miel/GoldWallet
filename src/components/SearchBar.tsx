@@ -12,6 +12,7 @@ const i18n = require('../../loc');
 interface Props {
   query: string;
   setQuery: (query: string) => void;
+  onFocus?: () => void;
 }
 
 interface State {
@@ -27,7 +28,10 @@ export class SearchBar extends React.PureComponent<Props, State> {
 
   cancelSearch = () => Keyboard.dismiss();
 
-  focus = () => this.setState({ focused: true });
+  focus = () => {
+    this.props.onFocus!();
+    this.setState({ focused: true });
+  };
 
   blur = () => this.setState({ focused: false });
 
