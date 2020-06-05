@@ -344,4 +344,17 @@ module.exports = {
     ok: 'Ok',
     cancel: 'Cancel',
   },
+  filterTransactions: {
+    header: 'Filter transactions',
+    receive: 'Receive',
+    send: 'Send',
+    filter: 'Filter',
+    to: 'To',
+    toAmount: 'To amount',
+    toDate: 'To date',
+    from: 'From',
+    fromAmount: 'From amount',
+    fromDate: 'From date',
+    clearFilters: 'Clear filters',
+  },
 };

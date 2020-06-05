@@ -12,7 +12,7 @@ import { typography, palette } from 'app/styles';
 
 import BlueApp from '../../BlueApp';
 import { Chain } from '../../models/bitcoinUnits';
-import { DashboardHeader } from './Dashboard/DashboardHeader';
+import { DashboarContentdHeader } from './Dashboard/DashboarContentdHeader';
 
 const i18n = require('../../loc');
 
@@ -170,7 +170,7 @@ export class ReceiveCoinsScreen extends Component<Props, State> {
           <Button title={i18n.receive.details.share} onPress={this.share} containerStyle={styles.buttonContainer} />
         }
       >
-        <DashboardHeader
+        <DashboarContentdHeader
           onSelectPress={this.showModal}
           balance={wallet.balance}
           label={wallet.label}

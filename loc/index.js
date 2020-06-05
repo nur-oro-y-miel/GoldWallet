@@ -1,4 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Localization from 'react-localization';
 
@@ -6,10 +8,10 @@ import { AppStorage } from '../class';
 import { BitcoinUnit } from '../models/bitcoinUnits';
 
 const BigNumber = require('bignumber.js');
-const dayjs = require('dayjs');
 
 let strings;
 dayjs.extend(relativeTime);
+dayjs.extend(localeData);
 
 // first-time loading sequence
 (async () => {
@@ -84,6 +86,16 @@ strings.transactionTimeToReadable = time => {
     return time;
   }
   return timejs;
+};
+
+strings.getListOfMonthsAndWeekdays = () => {
+  const dayjsLocaleData = dayjs.localeData();
+  return {
+    monthNames: dayjsLocaleData.months(),
+    monthNamesShort: dayjsLocaleData.monthsShort(),
+    dayNames: dayjsLocaleData.weekdays(),
+    dayNamesShort: dayjsLocaleData.weekdaysShort(),
+  };
 };
 
 function removeTrailingZeros(value) {

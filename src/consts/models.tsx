@@ -1,8 +1,10 @@
-export enum CONST {
-  pinCodeLength = 4,
-  transactionMinPasswordLength = 8,
-  allWallets = 'All wallets',
-}
+export const CONST = {
+  pinCodeLength: 4,
+  transactionMinPasswordLength: 8,
+  allWallets: 'All wallets',
+  receive: 'receive',
+  send: 'send',
+};
 
 export enum FlowType {
   password = 'password',
@@ -47,6 +49,7 @@ export enum Route {
   ConfirmTransactionPassword = 'ConfirmTransactionPassword',
   AdvancedOptions = 'AdvancedOptions',
   UnlockTransaction = 'UnlockTransaction',
+  FilterTransactions = 'FilterTransactions',
 }
 
 export interface Wallet {
@@ -100,4 +103,15 @@ export interface Transaction {
 
 export interface AppSettings {
   isPinSetup: boolean;
+}
+
+export interface Filters {
+  isFilteringOn: boolean;
+  dateKey?: number;
+  isCalendarVisible?: boolean;
+  fromDate?: string;
+  toDate?: string;
+  fromAmount?: number;
+  toAmount?: number;
+  transactionType?: string;
 }
