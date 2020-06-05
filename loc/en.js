@@ -355,5 +355,6 @@ module.exports = {
     from: 'From',
     fromAmount: 'From amount',
     fromDate: 'From date',
+    clearFilters: 'Clear filters',
   },
 };
