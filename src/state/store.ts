@@ -20,7 +20,7 @@ function bindMiddleware(middleware: Middleware[]) {
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['contacts'],
+  blacklist: ['wallets'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
