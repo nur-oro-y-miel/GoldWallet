@@ -204,11 +204,6 @@ class ImportWalletQRCodeScreen extends React.Component<Props, State> {
           }
         }
 
-        // is it even valid? if yes we will import as:
-        if (hd4.validateMnemonic()) {
-          return this.saveWallet(hd4);
-        }
-
         // not valid? maybe its a watch-only address?
 
         const watchOnly = new WatchOnlyWallet();
