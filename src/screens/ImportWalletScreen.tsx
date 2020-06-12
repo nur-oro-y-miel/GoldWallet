@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import { NavigationScreenProps, NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { Header, TextAreaItem, FlatButton, ScreenTemplate } from 'app/components';
@@ -28,7 +28,7 @@ interface Props extends NavigationInjectedProps {
   loadWallets: () => Promise<WalletsActionType>;
 }
 
-export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets }: Props) => {
+export const ImportWalletScreen: React.FunctionComponent<Props> = (props: Props) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [text, setText] = useState('');
   const [validationError, setValidationError] = useState('');
@@ -64,10 +64,10 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
     });
   };
 
-  const onChangeText = (text: string) => {
-    setText(text);
+  const onChangeText = (mnemonic: string) => {
+    setText(mnemonic);
     setValidationError('');
-    if (isButtonDisabled !== (text.length === 0)) {
+    if (isButtonDisabled !== (mnemonic.length === 0)) {
       setIsButtonDisabled(!isButtonDisabled);
     }
   };
@@ -87,22 +87,22 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
       newWallet.setLabel(i18n.wallets.import.imported + ' ' + newWallet.typeReadable);
       BlueApp.wallets.push(newWallet);
       await BlueApp.saveToDisk();
-      loadWallets();
+      props.loadWallets();
       showSuccessImportMessageScreen();
       // this.props.navigation.dismiss();
     }
   };
 
-  const importMnemonic = async (text: string) => {
+  const importMnemonic = async (mnemonic: string) => {
     try {
       // trying other wallet types
       const segwitWallet = new SegwitP2SHWallet();
-      segwitWallet.setSecret(text);
+      segwitWallet.setSecret(mnemonic);
       if (segwitWallet.getAddress()) {
         // ok its a valid WIF
 
         const legacyWallet = new LegacyWallet();
-        legacyWallet.setSecret(text);
+        legacyWallet.setSecret(mnemonic);
 
         await legacyWallet.fetchBalance();
         if (legacyWallet.getBalance() > 0) {
@@ -120,7 +120,7 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
       // case - WIF is valid, just has uncompressed pubkey
 
       const legacyWallet = new LegacyWallet();
-      legacyWallet.setSecret(text);
+      legacyWallet.setSecret(mnemonic);
       if (legacyWallet.getAddress()) {
         await legacyWallet.fetchBalance();
         await legacyWallet.fetchTransactions();
@@ -130,7 +130,7 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
       // if we're here - nope, its not a valid WIF
 
       const hd2 = new HDSegwitP2SHWallet();
-      hd2.setSecret(text);
+      hd2.setSecret(mnemonic);
       if (hd2.validateMnemonic()) {
         hd2.generateAddresses();
         await hd2.fetchBalance();
@@ -141,7 +141,7 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
       }
 
       const hd4 = new HDSegwitBech32Wallet();
-      hd4.setSecret(text);
+      hd4.setSecret(mnemonic);
       if (hd4.validateMnemonic()) {
         hd4.generateAddresses();
         await hd4.fetchBalance();
@@ -152,7 +152,7 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
       }
 
       const hd3 = new HDLegacyP2PKHWallet();
-      hd3.setSecret(text);
+      hd3.setSecret(mnemonic);
       if (hd3.validateMnemonic()) {
         hd3.generateAddresses();
         await hd3.fetchBalance();
@@ -191,7 +191,7 @@ export const ImportWalletScreen: React.FunctionComponent<Props> = ({ loadWallets
       // not valid? maybe its a watch-only address?
 
       const watchOnly = new WatchOnlyWallet();
-      watchOnly.setSecret(text);
+      watchOnly.setSecret(mnemonic);
       if (watchOnly.valid()) {
         await watchOnly.fetchTransactions();
         await watchOnly.fetchBalance();
