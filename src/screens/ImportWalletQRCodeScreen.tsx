@@ -156,7 +156,6 @@ class ImportWalletQRCodeScreen extends React.Component<Props, State> {
         const hd2 = new HDSegwitP2SHWallet();
         hd2.setSecret(text);
         if (hd2.validateMnemonic()) {
-          hd2.generateAddresses();
           await hd2.fetchBalance();
           if (hd2.getBalance() > 0) {
             await hd2.fetchTransactions();
@@ -167,7 +166,6 @@ class ImportWalletQRCodeScreen extends React.Component<Props, State> {
         const hd4 = new HDSegwitBech32Wallet();
         hd4.setSecret(text);
         if (hd4.validateMnemonic()) {
-          hd4.generateAddresses();
           await hd4.fetchBalance();
           if (hd4.getBalance() > 0) {
             await hd4.fetchTransactions();
@@ -178,7 +176,6 @@ class ImportWalletQRCodeScreen extends React.Component<Props, State> {
         const hd3 = new HDLegacyP2PKHWallet();
         hd3.setSecret(text);
         if (hd3.validateMnemonic()) {
-          hd3.generateAddresses();
           await hd3.fetchBalance();
           if (hd3.getBalance() > 0) {
             await hd3.fetchTransactions();
@@ -205,11 +202,6 @@ class ImportWalletQRCodeScreen extends React.Component<Props, State> {
           if (hd4.getTransactions().length !== 0) {
             return this.saveWallet(hd4);
           }
-        }
-
-        // is it even valid? if yes we will import as:
-        if (hd4.validateMnemonic()) {
-          return this.saveWallet(hd4);
         }
 
         // not valid? maybe its a watch-only address?
