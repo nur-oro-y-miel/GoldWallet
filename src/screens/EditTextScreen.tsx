@@ -28,7 +28,6 @@ export const EditTextScreen = (props: NavigationScreenProps) => {
     onSave(value);
     props.navigation.pop();
   };
-
   return (
     <ScreenTemplate
       footer={
