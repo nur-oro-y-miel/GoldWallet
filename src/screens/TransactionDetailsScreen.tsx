@@ -184,7 +184,7 @@ class TransactionDetailsScreen extends Component<Props, State> {
         <View style={styles.contentRowContainer}>
           <View style={styles.row}>
             <Text style={styles.contentRowTitle}>{i18n.transactions.details.from}</Text>
-            <CopyButton textToCopy={fromValue} />
+            <CopyButton textToCopy={fromValue.split(',')[0]} />
           </View>
           <Text style={styles.contentRowBody}>{fromValue}</Text>
           <StyledText title={i18n.transactions.details.sendCoins} onPress={this.sendCoins} />
@@ -192,7 +192,7 @@ class TransactionDetailsScreen extends Component<Props, State> {
         <View style={styles.contentRowContainer}>
           <View style={styles.row}>
             <Text style={styles.contentRowTitle}>{i18n.transactions.details.to}</Text>
-            <CopyButton textToCopy={toValue} />
+            <CopyButton textToCopy={toValue.split(',')[0]} />
           </View>
           <Text style={styles.contentRowBody}>{toValue}</Text>
         </View>
