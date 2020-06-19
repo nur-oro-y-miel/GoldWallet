@@ -94,10 +94,12 @@ export class InputItem extends PureComponent<Props, State> {
   render() {
     const { isAnimatedFocused, isActive } = this.state;
     const { label, suffix, error } = this.props;
+
     const top = this.state.isAnimatedFocused.interpolate({
       inputRange: [0, 1],
       outputRange: [12, -8],
     });
+
     const fontSize = isAnimatedFocused.interpolate({
       inputRange: [0, 1],
       outputRange: [14, 12],
