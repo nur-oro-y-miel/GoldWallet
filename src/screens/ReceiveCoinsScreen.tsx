@@ -111,7 +111,8 @@ export class ReceiveCoinsScreen extends Component<Props, State> {
     });
   };
 
-  validate = (value: string): string | undefined => !Number(value) && i18n.send.details.amount_field_is_not_valid;
+  validate = (value: string): string | undefined =>
+    !Number(value.replace(',', '.')) && i18n.send.details.amount_field_is_not_valid;
 
   editAmount = () => {
     this.props.navigation.navigate(Route.EditText, {
