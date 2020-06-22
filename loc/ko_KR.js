@@ -320,4 +320,17 @@ module.exports = {
     ok: '확인',
     cancel: '취소',
   },
+  filterTransactions: {
+    header: '거래 분류',
+    receive: '입금',
+    send: '송금',
+    filter: '필터 설정',
+    to: '수취인',
+    toAmount: '최대 금액',
+    toDate: '종료일',
+    from: '송금인',
+    fromAmount: '최소 금액',
+    fromDate: '시작일',
+    clearFilters: '필터 지우기',
+  },
 };

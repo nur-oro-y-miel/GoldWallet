@@ -328,4 +328,17 @@ module.exports = {
     ok: 'Tamam',
     cancel: 'İptal Et',
   },
+  filterTransactions: {
+    header: 'işlemleri filtreleri',
+    receive: 'al',
+    send: 'gönder',
+    filter: 'filtrele',
+    to: 'alan',
+    toAmount: 'son tutar',
+    toDate: 'bitiş tarihi',
+    from: 'gönderen',
+    fromAmount: 'ilk tutar',
+    fromDate: 'başlangıç tarihi',
+    clearFilters: 'filtreleri sil',
+  },
 };

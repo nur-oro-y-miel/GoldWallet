@@ -329,4 +329,17 @@ module.exports = {
     ok: 'Ok',
     cancel: 'Batal',
   },
+  filterTransactions: {
+    header: 'filter transaksi',
+    receive: 'terima',
+    send: 'kirim',
+    filter: 'filter ',
+    to: 'ke',
+    toAmount: 'ke jumlah',
+    toDate: 'ke tanggal',
+    from: 'dari',
+    fromAmount: 'monto mínimo',
+    fromDate: 'dari tanggal',
+    clearFilters: 'bersihkan filter',
+  },
 };
