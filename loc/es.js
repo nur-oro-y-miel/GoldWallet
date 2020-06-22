@@ -331,4 +331,17 @@ module.exports = {
     ok: 'Aceptar',
     cancel: 'Cancelar',
   },
+  filterTransactions: {
+    header: 'filtrar transacciones',
+    receive: 'recibir',
+    send: 'enviar',
+    filter: 'filtrar',
+    to: 'para',
+    toAmount: 'monto máximo',
+    toDate: 'fecha de finalización',
+    from: 'de',
+    fromAmount: 'monto mínimo',
+    fromDate: 'fecha de inicio',
+    clearFilters: 'borrar filtros',
+  },
 };

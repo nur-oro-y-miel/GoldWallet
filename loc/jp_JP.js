@@ -320,4 +320,17 @@ module.exports = {
     ok: 'Ok',
     cancel: 'キャンセル',
   },
+  filterTransactions: {
+    header: 'トランザクション・フィルター',
+    receive: '入金',
+    send: '送金',
+    filter: 'フィルター設定',
+    to: '受領者',
+    toAmount: '最大金額',
+    toDate: '終了日',
+    from: '送金者',
+    fromAmount: '最小金額',
+    fromDate: '開始日',
+    clearFilters: 'フィルター解除',
+  },
 };

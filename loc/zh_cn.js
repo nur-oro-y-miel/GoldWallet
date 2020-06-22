@@ -311,4 +311,17 @@ module.exports = {
     ok: '确认',
     cancel: '取消',
   },
+  filterTransactions: {
+    header: '筛选交易',
+    receive: '收到',
+    send: '发送',
+    filter: '筛选设置',
+    to: '收款人',
+    toAmount: '最大金额',
+    toDate: '结束日期',
+    from: '汇款人',
+    fromAmount: '最小金额',
+    fromDate: '起始日期',
+    clearFilters: '清除筛选设置',
+  },
 };

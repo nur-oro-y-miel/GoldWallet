@@ -331,4 +331,17 @@ module.exports = {
     ok: 'Ok',
     cancel: 'Hủy',
   },
+  filterTransactions: {
+    header: 'lọc giao dịch',
+    receive: 'nhận',
+    send: 'gửi',
+    filter: 'lọc ',
+    to: 'đến',
+    toAmount: 'đến số tiền ',
+    toDate: 'đến ngày',
+    from: 'từ',
+    fromAmount: 'từ số tiền ',
+    fromDate: 'từ ngày',
+    clearFilters: 'xóa lọc ',
+  },
 };
