@@ -1,36 +1,39 @@
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { icons } from 'app/assets';
 import { Button, Header, InputItem, ScreenTemplate, Text, Image } from 'app/components';
-import { Contact, Route } from 'app/consts';
+import { Contact, Route, MainTabNavigatorParams, MainCardStackNavigatorParams } from 'app/consts';
+import { checkAddress } from 'app/helpers/DataProcessing';
 import { CreateMessage, MessageType } from 'app/helpers/MessageCreator';
-import { NavigationService } from 'app/services';
 import { createContact, CreateContactAction } from 'app/state/contacts/actions';
 import { palette, typography } from 'app/styles';
 
 const i18n = require('../../loc');
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: CompositeNavigationProp<
+    StackNavigationProp<MainTabNavigatorParams, Route.ContactList>,
+    StackNavigationProp<MainCardStackNavigatorParams, Route.CreateContact>
+  >;
   createContact: (contact: Contact) => CreateContactAction;
 }
 
 interface State {
   name: string;
   address: string;
+  error: string;
 }
 
 export class CreateContactScreen extends React.PureComponent<Props, State> {
-  static navigationOptions = (props: NavigationScreenProps) => ({
-    header: <Header navigation={props.navigation} isBackArrow title={i18n.contactCreate.screenTitle} />,
-  });
-
   state: State = {
     name: '',
     address: '',
+    error: '',
   };
 
   get canCreateContact(): boolean {
@@ -39,27 +42,39 @@ export class CreateContactScreen extends React.PureComponent<Props, State> {
 
   setName = (name: string) => this.setState({ name });
 
-  setAddress = (address: string) => this.setState({ address });
+  setAddress = (address: string) => this.setState({ address, error: '' });
 
   onBarCodeScan = (address: string) => {
     this.setAddress(address.split('?')[0].replace('bitcoin:', ''));
   };
 
   createContact = () => {
-    this.props.createContact({
-      id: uuidv4(),
-      name: this.state.name.trim(),
-      address: this.state.address.trim(),
-    });
-    this.showSuccessImportMessageScreen();
-    this.setState({
-      name: '',
-      address: '',
-    });
+    try {
+      this.validateAddress();
+      if (this.state.error) return;
+      this.props.createContact({
+        id: uuidv4(),
+        name: this.state.name.trim(),
+        address: this.state.address.trim(),
+      });
+      this.showSuccessImportMessageScreen();
+      this.setState({
+        name: '',
+        address: '',
+      });
+    } catch (_) {
+      this.setState({
+        error: i18n.send.details.address_field_is_not_valid,
+      });
+    }
+  };
+
+  validateAddress = () => {
+    checkAddress(this.state.address);
   };
 
   onScanQrCodePress = () => {
-    NavigationService.navigate(Route.ScanQrCode, {
+    this.props.navigation.navigate(Route.ScanQrCode, {
       onBarCodeScan: this.onBarCodeScan,
     });
   };
@@ -71,7 +86,9 @@ export class CreateContactScreen extends React.PureComponent<Props, State> {
       type: MessageType.success,
       buttonProps: {
         title: i18n.contactCreate.successButton,
-        onPress: () => this.props.navigation.navigate(Route.ContactList),
+        onPress: () => {
+          this.props.navigation.navigate(Route.ContactList);
+        },
       },
     });
 
@@ -86,12 +103,14 @@ export class CreateContactScreen extends React.PureComponent<Props, State> {
             title={i18n.contactCreate.buttonLabel}
           />
         }
+        header={<Header navigation={this.props.navigation} isBackArrow title={i18n.contactCreate.screenTitle} />}
       >
         <Text style={styles.subtitle}>{i18n.contactCreate.subtitle}</Text>
         <Text style={styles.description}>{i18n.contactCreate.description}</Text>
         <InputItem setValue={this.setName} label={i18n.contactCreate.nameLabel} />
         <View>
           <InputItem
+            error={this.state.error}
             focused={!!address}
             value={address}
             multiline
