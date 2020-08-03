@@ -19,11 +19,13 @@ const { RNRandomBytes } = NativeModules;
  * In particular, BIP84 (Bech32 Native Segwit)
  * @see https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki
  */
+
 export class HDSegwitBech32Wallet extends AbstractHDWallet {
   static type = 'HDsegwitBech32';
   static typeReadable = 'HD SegWit';
   static defaultRBFSequence = 2147483648; // 1 << 31, minimum for replaceable transactions as per BIP68
-  static randomBytesSize = 32;
+  static randomBytesSize = 16;
+
   static basePath = "m/84'/440'/0'";
 
   constructor() {
@@ -55,6 +57,7 @@ export class HDSegwitBech32Wallet extends AbstractHDWallet {
   }
 
   async generate() {
+    console.log('HDSegwitBech32Wallet', HDSegwitBech32Wallet);
     return new Promise(resolve => {
       if (typeof RNRandomBytes === 'undefined') {
         // CLI/CI environment

@@ -66,11 +66,17 @@ export class SendCoinsConfirmScreen extends Component<Props> {
       };
     }
 
-    const decreasePending = pendingAmountDecrease ? roundBtcToSatoshis(pendingAmountDecrease) : 0;
+    if (pendingAmountDecrease !== undefined) {
+      const decreasePending = roundBtcToSatoshis(pendingAmountDecrease);
+      return {
+        availableBalance: satoshiToBtc(balance + amount.my - amount.foreign) - fee,
+        pendingBalance: satoshiToBtc(incomingBalance).toNumber() - decreasePending,
+      };
+    }
 
     return {
-      availableBalance: satoshiToBtc(balance + amount.my - amount.foreign) - fee,
-      pendingBalance: satoshiToBtc(incomingBalance).toNumber() - decreasePending,
+      availableBalance: satoshiToBtc(balance - amount.foreign) - fee,
+      pendingBalance: satoshiToBtc(incomingBalance).toNumber(),
     };
   };
 
