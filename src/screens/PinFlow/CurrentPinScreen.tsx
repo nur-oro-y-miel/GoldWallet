@@ -5,8 +5,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { Header, PinInput, ScreenTemplate } from 'app/components';
-import { TimeCounter } from 'app/components/TimeCounter';
-import { Route, CONST, FlowType, MainCardStackNavigatorParams } from 'app/consts';
+import { Route, CONST, FlowType, MainCardStackNavigatorParams, firstAttempt, finalAttempt } from 'app/consts';
+import { noop } from 'app/helpers/helpers';
 import { SecureStorageService } from 'app/services';
 import { ApplicationState } from 'app/state';
 import {
@@ -14,6 +14,8 @@ import {
   SetTimeCounterAction,
   setFailedAttempts,
   SetFailedAttemptsAction,
+  setFailedAttemptStep,
+  SetFailedAttemptStepAction,
 } from 'app/state/timeCounter/actions';
 import { TimeCounterState } from 'app/state/timeCounter/reducer';
 import { palette, typography } from 'app/styles';
@@ -27,29 +29,28 @@ interface Props {
   };
   setTimeCounter: (timestamp: number) => SetTimeCounterAction;
   setFailedAttempts: (attempt: number) => SetFailedAttemptsAction;
+  setFailedAttemptStep: (failedAttempt: number) => SetFailedAttemptStepAction;
   timeCounter: TimeCounterState;
 }
 
 interface State {
   pin: string;
   error: string;
-  failedTimes: number;
   isCount: boolean;
 }
 
 class CurrentPinScreen extends PureComponent<Props, State> {
+  unsubscribeFocusListener: Function = noop;
   state = {
     pin: '',
     error: '',
-    failedTimes: 0,
     isCount: true,
   };
 
-  handleFailedAttempt = (increasedFailedTimes: number) => {
+  handleFailedAttempt = (increasedFailedAttemptStep: number) => {
     const { attempt } = this.props.timeCounter;
-    const isFinalAttempt = increasedFailedTimes > 2;
-    const finalAttempt = 3;
-    const firstAttempt = 0;
+    const { setFailedAttempts, setFailedAttemptStep, setTimeCounter } = this.props;
+    const isFinalAttempt = increasedFailedAttemptStep === finalAttempt;
     let currentDate = dayjs();
     let blockedTimeInMinutes = 1;
 
@@ -61,33 +62,36 @@ class CurrentPinScreen extends PureComponent<Props, State> {
     currentDate = currentDate.add(blockedTimeInMinutes, 'minute');
 
     if (isFinalAttempt) {
-      this.props.setTimeCounter(currentDate.unix());
-      this.props.setFailedAttempts(attempt + 1);
+      setTimeCounter(currentDate.unix());
+      setFailedAttempts(attempt + 1);
+      setFailedAttemptStep(0);
       this.setState({ isCount: true });
+    } else {
+      setFailedAttemptStep(increasedFailedAttemptStep);
     }
 
-    return increasedFailedTimes !== firstAttempt && increasedFailedTimes !== finalAttempt
-      ? `\n${i18n.onboarding.failedTimesErrorInfo} ${blockedTimeInMinutes} ${i18n.onboarding.minutes}\n${i18n.onboarding.failedTimes} ${increasedFailedTimes}/${finalAttempt}`
+    return !isFinalAttempt
+      ? `\n${i18n.onboarding.failedTimesErrorInfo} ${blockedTimeInMinutes} ${i18n.onboarding.minutes}\n${i18n.onboarding.failedTimes} ${increasedFailedAttemptStep}/${finalAttempt}`
       : '';
   };
 
   updatePin = (pin: string) => {
-    const { setFailedAttempts } = this.props;
+    const { setFailedAttempts, setFailedAttemptStep } = this.props;
     this.setState({ pin }, async () => {
       if (this.state.pin.length === CONST.pinCodeLength) {
         const setPin = await SecureStorageService.getSecuredValue('pin');
         if (setPin === this.state.pin) {
           setFailedAttempts(0);
+          setFailedAttemptStep(0);
           this.props.navigation.navigate(Route.CreatePin, {
             flowType: FlowType.newPin,
           });
         } else {
-          const increasedFailedTimes = this.state.failedTimes + 1;
-          const failedTimesError = this.handleFailedAttempt(increasedFailedTimes);
+          const increasedFailedAttemptStep = this.props.timeCounter.failedAttemptStep + 1;
+          const failedTimesError = this.handleFailedAttempt(increasedFailedAttemptStep);
           this.setState({
             error: i18n.onboarding.pinDoesNotMatch + failedTimesError,
             pin: '',
-            failedTimes: increasedFailedTimes,
           });
         }
       }
@@ -95,12 +99,22 @@ class CurrentPinScreen extends PureComponent<Props, State> {
   };
 
   onCountFinish = () => {
-    this.setState({ failedTimes: 0, isCount: false });
+    this.setState({ isCount: false });
   };
 
   isTimeCounterVisible = () => {
     return dayjs().unix() < this.props.timeCounter.timestamp && this.state.isCount;
   };
+
+  componentDidMount() {
+    this.unsubscribeFocusListener = this.props.navigation.addListener('focus', () => {
+      this.setState({ pin: '', error: '' });
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFocusListener();
+  }
 
   render() {
     const { error } = this.state;
@@ -119,7 +133,7 @@ class CurrentPinScreen extends PureComponent<Props, State> {
           <Text style={typography.headline4}>{i18n.onboarding.currentPin}</Text>
         </View>
         <View style={styles.pinContainer}>
-          <PinInput value={this.state.pin} onTextChange={this.updatePin} />
+          <PinInput value={this.state.pin} onTextChange={this.updatePin} navigation={this.props.navigation} />
           <Text style={styles.errorText}>{error}</Text>
         </View>
       </ScreenTemplate>
@@ -134,6 +148,7 @@ const mapStateToProps = (state: ApplicationState) => ({
 const mapDispatchToProps = {
   setTimeCounter,
   setFailedAttempts,
+  setFailedAttemptStep,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentPinScreen);
