@@ -11,7 +11,13 @@ import { typography, palette } from 'app/styles';
 
 import BlueApp from '../../BlueApp';
 import BitcoinBIP70TransactionDecode from '../../bip70/bip70';
-import { HDLegacyP2PKHWallet, HDSegwitBech32Wallet, HDSegwitP2SHWallet, WatchOnlyWallet } from '../../class';
+import {
+  HDLegacyP2PKHWallet,
+  HDSegwitBech32Wallet,
+  HDSegwitP2SHWallet,
+  SegwitP2SHWallet,
+  WatchOnlyWallet,
+} from '../../class';
 import { BitcoinTransaction } from '../../models/bitcoinTransactionInfo';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
@@ -20,6 +26,7 @@ import { DashboarContentdHeader } from './Dashboard/DashboarContentdHeader';
 const BigNumber = require('bignumber.js');
 const bitcoin = require('bitcoinjs-lib');
 
+const config = require('../../config');
 const i18n = require('../../loc');
 
 interface Props {
@@ -361,7 +368,7 @@ export class SendCoinsScreen extends Component<Props, State> {
 
       if (!error) {
         try {
-          bitcoin.address.toOutputScript(transaction.address);
+          bitcoin.address.toOutputScript(transaction.address, config.network);
         } catch (err) {
           console.log('validation error');
           console.log(err);
@@ -400,12 +407,13 @@ export class SendCoinsScreen extends Component<Props, State> {
 
     // legacy send below
 
+    let fee = 0.000001; // initial fee guess
+
     this.setState({ isLoading: true }, async () => {
       let utxo: any;
       let actualSatoshiPerByte: any;
       let tx: any, txid: any;
       let tries = 1;
-      let fee = 0.000001; // initial fee guess
       const firstTransaction = this.state.addresses[0];
       try {
         await this.state.fromWallet.fetchUtxo();
@@ -466,12 +474,7 @@ export class SendCoinsScreen extends Component<Props, State> {
         this.props.navigation.navigate(Route.SendCoinsConfirm, {
           recipients: [firstTransaction],
           // HD wallet's utxo is in sats, classic segwit wallet utxos are in btc
-          fee: this.calculateFee(
-            utxo,
-            tx,
-            this.state.fromWallet.type === HDSegwitP2SHWallet.type ||
-              this.state.fromWallet.type === HDLegacyP2PKHWallet.type,
-          ),
+          fee,
           memo: this.state.memo,
           fromWallet: this.state.fromWallet,
           tx,

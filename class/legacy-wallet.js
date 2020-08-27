@@ -7,8 +7,8 @@ const BigNumber = require('bignumber.js');
 const bitcoin = require('bitcoinjs-lib');
 
 const BlueElectrum = require('../BlueElectrum');
+const config = require('../config');
 const signer = require('../models/signer');
-
 /**
  *  Has private key and single address like "1ABCD....."
  *  (legacy P2PKH compressed)
@@ -53,6 +53,7 @@ export class LegacyWallet extends AbstractWallet {
           // eslint-disable-line
           if (err) throw err;
           that.secret = bitcoin.ECPair.makeRandom({
+            network: config.network,
             rng(length) {
               return buf;
             },
@@ -65,6 +66,7 @@ export class LegacyWallet extends AbstractWallet {
       RNRandomBytes.randomBytes(32, (err, bytes) => {
         if (err) throw new Error(err);
         that.secret = bitcoin.ECPair.makeRandom({
+          network: config.network,
           rng(length) {
             const b = Buffer.from(bytes, 'base64');
             return b;
@@ -79,9 +81,10 @@ export class LegacyWallet extends AbstractWallet {
     if (this._address) return this._address;
     let address;
     try {
-      const keyPair = bitcoin.ECPair.fromWIF(this.secret);
+      const keyPair = bitcoin.ECPair.fromWIF(this.secret, config.network);
       address = bitcoin.payments.p2pkh({
         pubkey: keyPair.publicKey,
+        network: config.network,
       }).address;
     } catch (err) {
       return false;
@@ -164,15 +167,16 @@ export class LegacyWallet extends AbstractWallet {
    * @return string Signed txhex ready for broadcast
    */
   createTx(utxos, amount, fee, toAddress, memo) {
+    const newUtxos = JSON.parse(JSON.stringify(utxos));
     // transforming UTXOs fields to how module expects it
-    for (const u of utxos) {
+    for (const u of newUtxos) {
       u.confirmations = 6; // hack to make module accept 0 confirmation
       u.value = u.value / 100000000;
       u.value = u.value.toString(10);
     }
     // console.log('creating legacy tx ', amount, ' with fee ', fee, 'secret=', this.getSecret(), 'from address', this.getAddress());
     const amountPlusFee = parseFloat(new BigNumber(amount).plus(fee).toString(10));
-    return signer.createTransaction(utxos, toAddress, amountPlusFee, fee, this.getSecret(), this.getAddress());
+    return signer.createTransaction(newUtxos, toAddress, amountPlusFee, fee, this.getSecret(), this.getAddress());
   }
 
   getLatestTransactionTime() {
@@ -205,7 +209,7 @@ export class LegacyWallet extends AbstractWallet {
 
   isAddressValid(address) {
     try {
-      bitcoin.address.toOutputScript(address);
+      bitcoin.address.toOutputScript(address, config.network);
       return true;
     } catch (e) {
       return false;

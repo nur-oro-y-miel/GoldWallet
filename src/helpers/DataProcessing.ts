@@ -1,5 +1,7 @@
 const bitcoin = require('bitcoinjs-lib');
 
+const config = require('../../config');
+
 export const processAddressData = (data: string, stateAmount?: any) => {
   const regex = /[?&]([^=#]+)=([^&#]*)/g;
   const solvedData = regex.exec(data);
@@ -24,4 +26,4 @@ export const processAddressData = (data: string, stateAmount?: any) => {
   return newAddresses;
 };
 
-export const checkAddress = (address: string) => bitcoin.address.toOutputScript(address);
+export const checkAddress = (address: string) => bitcoin.address.toOutputScript(address, config.network);

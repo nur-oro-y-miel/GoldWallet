@@ -2,6 +2,8 @@ import { LegacyWallet } from './legacy-wallet';
 
 const bitcoin = require('bitcoinjs-lib');
 
+const config = require('../config');
+
 export class SegwitBech32Wallet extends LegacyWallet {
   static type = 'segwitBech32';
   static typeReadable = 'P2 WPKH';
@@ -10,9 +12,10 @@ export class SegwitBech32Wallet extends LegacyWallet {
     if (this._address) return this._address;
     let address;
     try {
-      const keyPair = bitcoin.ECPair.fromWIF(this.secret);
+      const keyPair = bitcoin.ECPair.fromWIF(this.secret, config.network);
       address = bitcoin.payments.p2wpkh({
         pubkey: keyPair.publicKey,
+        network: config.network,
       }).address;
     } catch (err) {
       return false;
@@ -26,7 +29,7 @@ export class SegwitBech32Wallet extends LegacyWallet {
     const pubKey = Buffer.from(witness, 'hex');
     return bitcoin.payments.p2wpkh({
       pubkey: pubKey,
-      network: bitcoin.networks.bitcoin,
+      network: config.network,
     }).address;
   }
 
@@ -42,7 +45,7 @@ export class SegwitBech32Wallet extends LegacyWallet {
     try {
       ret = bitcoin.payments.p2wpkh({
         output: scriptPubKey2,
-        network: bitcoin.networks.bitcoin,
+        network: config.network,
       }).address;
     } catch (_) {
       return false;

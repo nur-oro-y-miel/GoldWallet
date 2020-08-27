@@ -8,6 +8,8 @@ global.crypto = require('crypto'); // shall be used by tests under nodejs CLI, b
 
 global.net = require('net'); // needed by Electrum client. For RN it is proviced in shim.js
 const BlueElectrum = require('../../BlueElectrum');
+const config = require('../../config');
+
 // so it connects ASAP
 jest.setTimeout(300000);
 
@@ -160,8 +162,8 @@ it('HD (BIP49) can create TX', async () => {
   assert.strictEqual(tx.outs.length, 2);
   assert.strictEqual(tx.outs[0].value, 500);
   assert.strictEqual(tx.outs[1].value, 25400);
-  let toAddress = bitcoin.address.fromOutputScript(tx.outs[0].script);
-  const changeAddress = bitcoin.address.fromOutputScript(tx.outs[1].script);
+  let toAddress = bitcoin.address.fromOutputScript(tx.outs[0].script, config.network);
+  const changeAddress = bitcoin.address.fromOutputScript(tx.outs[1].script, config.network);
   assert.strictEqual('RKBm1Wz1tPBefb92d3hEXYMZqZTsxEcPJe', toAddress);
   assert.strictEqual(hd._getInternalAddressByIndex(hd.next_free_change_address_index), changeAddress);
 
@@ -178,7 +180,7 @@ it('HD (BIP49) can create TX', async () => {
   tx = bitcoin.Transaction.fromHex(txhex);
   assert.strictEqual(tx.ins.length, 1);
   assert.strictEqual(tx.outs.length, 1);
-  toAddress = bitcoin.address.fromOutputScript(tx.outs[0].script);
+  toAddress = bitcoin.address.fromOutputScript(tx.outs[0].script, config.network);
   assert.strictEqual('RKBm1Wz1tPBefb92d3hEXYMZqZTsxEcPJe', toAddress);
 
   // testing sendMAX
@@ -353,8 +355,8 @@ it('Legacy HD (BIP44) can create TX', async () => {
   assert.strictEqual(tx.outs.length, 2);
   assert.strictEqual(tx.outs[0].value, 80000); // payee
   assert.strictEqual(tx.outs[1].value, 19500); // change
-  const toAddress = bitcoin.address.fromOutputScript(tx.outs[0].script);
-  const changeAddress = bitcoin.address.fromOutputScript(tx.outs[1].script);
+  const toAddress = bitcoin.address.fromOutputScript(tx.outs[0].script, config.network);
+  const changeAddress = bitcoin.address.fromOutputScript(tx.outs[1].script, config.network);
   assert.strictEqual(toAddress, 'RA4DhjMkk67nBYbNhPh8q3Zh3mDeGZzCdX');
   assert.strictEqual(hd._getInternalAddressByIndex(hd.next_free_change_address_index), changeAddress);
 

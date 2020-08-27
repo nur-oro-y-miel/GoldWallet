@@ -1,5 +1,4 @@
 /* global describe, it, expect, jest, jasmine */
-import React from 'react';
 
 import { LegacyWallet, SegwitP2SHWallet } from '../../class';
 
@@ -63,7 +62,7 @@ it('Wallet can fetch balance', async () => {
 });
 
 it('Wallet can fetch UTXO', async () => {
-  jest.setTimeout(30000);
+  jest.setTimeout(60000);
   const w = new LegacyWallet();
   w._address = 'YWw3NfAvYyZfMgzqooG4b4NYUzBdAToYba';
   assert.strictEqual(w.getAddress(), 'YWw3NfAvYyZfMgzqooG4b4NYUzBdAToYba');
