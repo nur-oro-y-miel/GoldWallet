@@ -85,7 +85,6 @@ export class SegwitP2SHWallet extends LegacyWallet {
    * @return string Signed txhex ready for broadcast
    */
   createTx(utxos, amount, fee, address, memo, sequence) {
-    console.log('utxos', utxos);
     const newUtxos = JSON.parse(JSON.stringify(utxos));
     // TODO: memo is not used here, get rid of it
     if (sequence === undefined) {

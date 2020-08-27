@@ -62,7 +62,7 @@ it('Wallet can fetch balance', async () => {
 });
 
 it('Wallet can fetch UTXO', async () => {
-  jest.setTimeout(60000);
+  jest.setTimeout(30000);
   const w = new LegacyWallet();
   w._address = 'YWw3NfAvYyZfMgzqooG4b4NYUzBdAToYba';
   assert.strictEqual(w.getAddress(), 'YWw3NfAvYyZfMgzqooG4b4NYUzBdAToYba');
