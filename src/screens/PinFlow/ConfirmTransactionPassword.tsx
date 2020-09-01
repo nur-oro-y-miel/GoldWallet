@@ -37,7 +37,7 @@ export class ConfirmTransactionPassword extends PureComponent<Props, State> {
   onSave = async () => {
     const { setPassword } = this.props.route.params;
     if (setPassword === this.state.password) {
-      await SecureStorageService.setSecuredValue('transactionPassword', this.state.password, true);
+      await SecureStorageService.setSecuredValue(CONST.transactionPassword, this.state.password, true);
       CreateMessage({
         title: i18n.contactCreate.successTitle,
         description: i18n.onboarding.successDescription,

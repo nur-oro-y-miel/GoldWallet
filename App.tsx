@@ -6,6 +6,7 @@ import { View, YellowBox, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { CONST } from 'app/consts';
 import { BlueApp } from 'app/legacy';
 import { i18n } from 'app/locale';
 import { RootNavigator } from 'app/navigators';
@@ -34,7 +35,7 @@ export default class App extends React.PureComponent<State> {
   };
 
   async componentDidMount() {
-    const isPinSet = await SecureStorageService.getSecuredValue('pin');
+    const isPinSet = await SecureStorageService.getSecuredValue(CONST.pin);
     if (isPinSet) {
       this.setState({ isPinSet });
     }

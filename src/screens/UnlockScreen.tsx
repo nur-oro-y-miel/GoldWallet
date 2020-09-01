@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React, { PureComponent } from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 
 import { images } from 'app/assets';
@@ -49,6 +49,7 @@ class UnlockScreen extends PureComponent<Props, State> {
     if (this.props.isBiometricEnabledByUser && !this.isTimeCounterVisible()) {
       await this.unlockWithBiometrics();
     }
+    Keyboard.dismiss();
   }
 
   unlockWithBiometrics = async () => {
@@ -93,7 +94,7 @@ class UnlockScreen extends PureComponent<Props, State> {
     if (this.state.pin.length < CONST.pinCodeLength) {
       this.setState({ pin: this.state.pin + pin }, async () => {
         if (this.state.pin.length === CONST.pinCodeLength) {
-          const setPin = await SecureStorageService.getSecuredValue('pin');
+          const setPin = await SecureStorageService.getSecuredValue(CONST.pin);
           if (setPin === this.state.pin) {
             setFailedAttempts(0);
             setFailedAttemptStep(0);
