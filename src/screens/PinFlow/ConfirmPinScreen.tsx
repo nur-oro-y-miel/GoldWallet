@@ -43,7 +43,7 @@ export class ConfirmPinScreen extends PureComponent<Props, State> {
       if (this.state.pin.length === CONST.pinCodeLength) {
         const setPin = this.props.route.params.pin;
         if (setPin === this.state.pin) {
-          await SecureStorageService.setSecuredValue('pin', this.state.pin);
+          await SecureStorageService.setSecuredValue(CONST.pin, this.state.pin);
           if (this.state.flowType === FlowType.newPin) {
             CreateMessage({
               title: i18n.contactCreate.successTitle,
