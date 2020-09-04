@@ -45,7 +45,6 @@ class UnlockScreen extends PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    await BlueApp.startAndDecrypt();
     if (this.props.isBiometricEnabledByUser && !this.isTimeCounterVisible()) {
       await this.unlockWithBiometrics();
     }
