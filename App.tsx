@@ -35,6 +35,7 @@ export default class App extends React.PureComponent<State> {
   };
 
   async componentDidMount() {
+    await BlueApp.startAndDecrypt();
     const isPinSet = await SecureStorageService.getSecuredValue(CONST.pin);
     if (isPinSet) {
       this.setState({ isPinSet });
@@ -59,7 +60,6 @@ export default class App extends React.PureComponent<State> {
   get showUnlockScreen(): boolean {
     if (__DEV__) {
       // do not check PIN during development
-      BlueApp.startAndDecrypt();
       return false;
     }
     const { successfullyAuthenticated, isPinSet } = this.state;
