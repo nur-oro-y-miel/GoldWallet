@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   },
   touchableOpacityContainer: {
     flexDirection: 'row',
+    flex: 1,
   },
   textContainer: {
     paddingLeft: 20,
