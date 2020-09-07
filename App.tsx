@@ -71,7 +71,7 @@ export default class App extends React.PureComponent<State> {
     return (
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
-          <AppStateManager handleAppComesToBackground={this.lockScreen} />
+          <AppStateManager handleAppComesToForeground={this.lockScreen} />
           <PersistGate loading={null} persistor={persistor}>
             <View style={styles.wrapper}>
               <NavigationContainer ref={navigationRef as any}>
