@@ -11,7 +11,7 @@ export default class SecureStorageService {
       value = sha256(value).toString();
     }
     return await RNSecureKeyStore.set(key, value, {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED,
+      accessible: ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
     });
   }
 
