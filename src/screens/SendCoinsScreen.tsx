@@ -52,7 +52,7 @@ interface State {
   vaultTxType: number;
 }
 
-export class SendCoinsScreen extends Component<Props, State> {
+class SendCoinsScreen extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     const { route, wallets } = props;
@@ -530,7 +530,7 @@ export class SendCoinsScreen extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: ApplicationState) => ({
-  walletsLabels: selectors.wallets(state),
+  wallets: selectors.wallets(state),
 });
 
 export default connect(mapStateToProps)(SendCoinsScreen);
